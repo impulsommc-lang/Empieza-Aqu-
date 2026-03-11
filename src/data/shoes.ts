@@ -30,12 +30,34 @@ export const shoes: Shoe[] = [
     sizesAvailable: [35, 36, 37, 38, 39],
     description: 'Mule de punta fina con doble tira de charol negro y taco bloque bajo. Elegancia discreta para el día a día.',
     images: [
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-A6tRhz5zyvIbYOLxzzhFeJxrCfdr7h.jpeg',
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-A6tRhz5zyvIbYOLxzzhFeJxrCfdr7h.jpeg'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-jBFGzBp3VYqIKYqNLCbwa9i2vP79Uw.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.png-Dc1DARZsqVW9boIqgupC0pg5sUoPTA.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto2%20portada.png-rqIUGtMz7I5hnEzeqC1fgHsyfldOWP.jpeg'
     ],
     isAvailable: true,
     tags: ['Elegante', 'Día', 'Clásico'],
     badge: 'Bestseller'
+  },
+  {
+    id: '4',
+    sku: 'ST-002',
+    name: 'Estileto Cruzado',
+    slug: 'estileto-cruzado',
+    price: 370,
+    type: 'Estiletos',
+    color: 'Crema',
+    material: 'Charol',
+    heelHeight: '4 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Slingback de punta fina con múltiples tiras cruzadas y hebillas plateadas. Un diseño estructurado que combina modernidad y feminidad.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.2.png-XmCdQHzucR2hDZ1xL6BWXzY8kV7Xh0.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203.3.png-gSOOsVeQkNjvTLjjYz0M3g2qVhvQ6Y.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203-ztEBUQfO2FBXZwIGzAxfGYCegEKqAm.jpeg'
+    ],
+    isAvailable: true,
+    tags: ['Elegante', 'Noche', 'Moderno'],
+    badge: 'Nuevo'
   },
   {
     id: '2',
