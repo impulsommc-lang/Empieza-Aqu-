@@ -22,7 +22,7 @@ export const shoes: Shoe[] = [
     sku: 'ST-001',
     name: 'Estileto Doble Tira',
     slug: 'estileto-doble-tira',
-    price: 350,
+    price: 99.90,
     type: 'Estiletos',
     color: 'Crema / Negro',
     material: 'Cuero',
@@ -43,7 +43,7 @@ export const shoes: Shoe[] = [
     sku: 'ST-002',
     name: 'Estileto Cruzado',
     slug: 'estileto-cruzado',
-    price: 370,
+    price: 99.90,
     type: 'Estiletos',
     color: 'Crema',
     material: 'Charol',
@@ -62,9 +62,30 @@ export const shoes: Shoe[] = [
   {
     id: '2',
     sku: 'SD-001',
-    name: 'Sandalia Baja Denim',
-    slug: 'sandalia-baja-denim',
-    price: 280,
+    name: 'Sandalia Blanca Cruzada',
+    slug: 'sandalia-blanca-cruzada',
+    price: 99.90,
+    type: 'Sandalias bajas',
+    color: 'Blanco / Negro',
+    material: 'Cuero',
+    heelHeight: 'Plana',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Mule plana de punta cuadrada en blanco con tiras cruzadas en negro. Fresca, cómoda y perfecta para cualquier look de verano.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sandalias%20portada.png-aMIKE3lJv9UmLAIovjsPkY3HCeywHs.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalias%201-ht9pYCrYQNTUcJp42H8xoLbEcOwFw0.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalias%202-52wsZqTi7aqIfv8RdTTyrPjKXA0fec.jpeg'
+    ],
+    isAvailable: true,
+    tags: ['Día', 'Verano', 'Casual'],
+    badge: 'Favorito de clientas'
+  },
+  {
+    id: '5',
+    sku: 'SD-002',
+    name: 'Sandalia Denim Baja',
+    slug: 'sandalia-denim-baja',
+    price: 99.90,
     type: 'Sandalias bajas',
     color: 'Azul / Crema',
     material: 'Denim',
@@ -72,19 +93,20 @@ export const shoes: Shoe[] = [
     sizesAvailable: [35, 36, 37, 38, 39],
     description: 'Mule abierta de denim celeste con tira en V de cuero crema. Fresca y sofisticada, ideal para la temporada cálida.',
     images: [
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-wlLjBmRJV8rXaOwnAPE7MQl39FbNam.jpeg',
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-wlLjBmRJV8rXaOwnAPE7MQl39FbNam.jpeg'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-MabSIIgItDeTYtpVIhIUwgeQtC0UPh.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sanda%20modelo%202%20.2.png-lK5hga42LE0s5hHQJ1jCPsNe13zoWW.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sanda%20modelo%202.3-kGTeTqPHyh1uZPFTHFUUxq099KRRL0.jpeg'
     ],
     isAvailable: true,
     tags: ['Día', 'Verano', 'Casual'],
-    badge: 'Favorito de clientas'
+    badge: 'Nuevo'
   },
   {
     id: '3',
     sku: 'SV-001',
     name: 'Charlotte Jeans Celeste',
     slug: 'charlotte-jeans-celeste',
-    price: 380,
+    price: 99.90,
     type: 'Sandalias de vestir',
     color: 'Azul celeste',
     material: 'Denim',
