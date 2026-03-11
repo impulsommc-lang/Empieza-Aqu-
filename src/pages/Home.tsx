@@ -52,7 +52,7 @@ export default function Home() {
             className="w-full h-full object-cover object-center"
             poster="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop"
           >
-            <source src="https://cdn.coverr.co/videos/coverr-woman-walking-in-high-heels-2631/1080p.mp4" type="video/mp4" />
+            <source src="/bubcle.mp4" type="video/mp4" />
             {/* Fallback image if video fails */}
             <img src="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop" alt="Mujer caminando con estilo" className="w-full h-full object-cover" />
           </video>
