@@ -13,28 +13,18 @@ export default function Home() {
   const categories = [
     { 
       name: 'Estiletos', 
-      image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop',
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-A6tRhz5zyvIbYOLxzzhFeJxrCfdr7h.jpeg',
       available: true
     },
     { 
       name: 'Sandalias bajas', 
-      image: 'https://images.unsplash.com/photo-1562183241-b937e95585b6?q=80&w=800&auto=format&fit=crop',
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-wlLjBmRJV8rXaOwnAPE7MQl39FbNam.jpeg',
       available: true
     },
     { 
-      name: 'Botas', 
-      image: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=800&auto=format&fit=crop',
-      available: false
-    },
-    { 
-      name: 'Balerinas', 
-      image: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?q=80&w=800&auto=format&fit=crop',
-      available: false
-    },
-    { 
-      name: 'Plataforma', 
-      image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=800&auto=format&fit=crop',
-      available: false
+      name: 'Sandalias de vestir', 
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_3yl1463yl1463yl1.png-uBnWczAR9IAbOUkCWEkUdLgQcMmlTG.jpeg',
+      available: true
     },
   ];
 
@@ -49,12 +39,11 @@ export default function Home() {
             loop
             muted
             playsInline
-            className="w-full h-full object-cover object-center"
+            preload="auto"
             poster="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop"
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           >
-            <source src="https://cdn.coverr.co/videos/coverr-woman-walking-in-high-heels-2631/1080p.mp4" type="video/mp4" />
-            {/* Fallback image if video fails */}
-            <img src="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop" alt="Mujer caminando con estilo" className="w-full h-full object-cover" />
+            <source src="/bubcle.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black/30" />
         </div>
@@ -112,7 +101,7 @@ export default function Home() {
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-6">
           {categories.map((category, index) => (
             <motion.div
               key={category.name}

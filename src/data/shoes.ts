@@ -4,7 +4,7 @@ export interface Shoe {
   name: string;
   slug: string;
   price: number;
-  type: 'Estiletos' | 'Sandalias bajas' | 'Botas' | 'Balerinas' | 'Plataforma';
+  type: 'Estiletos' | 'Sandalias bajas' | 'Sandalias de vestir';
   color: string;
   material: string;
   heelHeight: string;
@@ -20,118 +20,143 @@ export const shoes: Shoe[] = [
   {
     id: '1',
     sku: 'ST-001',
-    name: 'Estileto Clásico Noir',
-    slug: 'estileto-clasico-noir',
-    price: 350,
+    name: 'Estileto Doble Tira',
+    slug: 'estileto-doble-tira',
+    price: 99.90,
     type: 'Estiletos',
-    color: 'Negro',
+    color: 'Crema / Negro',
     material: 'Cuero',
-    heelHeight: '10 cm',
+    heelHeight: '4 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
-    description: 'La definición de elegancia atemporal. Un diseño que alarga la silueta y aporta una seguridad inquebrantable a cada paso.',
+    description: 'Mule de punta fina con doble tira de charol negro y taco bloque bajo. Elegancia discreta para el día a día.',
     images: [
-      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-jBFGzBp3VYqIKYqNLCbwa9i2vP79Uw.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.png-Dc1DARZsqVW9boIqgupC0pg5sUoPTA.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto2%20portada.png-rqIUGtMz7I5hnEzeqC1fgHsyfldOWP.jpeg'
     ],
     isAvailable: true,
-    tags: ['Elegante', 'Noche', 'Clásico'],
+    tags: ['Elegante', 'Día', 'Clásico'],
     badge: 'Bestseller'
   },
   {
-    id: '2',
-    sku: 'SD-014',
-    name: 'Sandalia Baja Minimalista',
-    slug: 'sandalia-baja-minimalista',
-    price: 280,
-    type: 'Sandalias bajas',
-    color: 'Nude',
-    material: 'Gamuza',
-    heelHeight: 'Plana',
-    sizesAvailable: [36, 37, 38],
-    description: 'Líneas puras y comodidad absoluta. El complemento perfecto para un look de día sofisticado y sin esfuerzo.',
+    id: '4',
+    sku: 'ST-002',
+    name: 'Estileto Cruzado',
+    slug: 'estileto-cruzado',
+    price: 99.90,
+    type: 'Estiletos',
+    color: 'Crema',
+    material: 'Charol',
+    heelHeight: '4 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Slingback de punta fina con múltiples tiras cruzadas y hebillas plateadas. Un diseño estructurado que combina modernidad y feminidad.',
     images: [
-      'https://images.unsplash.com/photo-1562183241-b937e95585b6?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1562183241-b937e95585b6?q=80&w=800&auto=format&fit=crop'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.2.png-XmCdQHzucR2hDZ1xL6BWXzY8kV7Xh0.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203.3.png-gSOOsVeQkNjvTLjjYz0M3g2qVhvQ6Y.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203-ztEBUQfO2FBXZwIGzAxfGYCegEKqAm.jpeg'
     ],
     isAvailable: true,
-    tags: ['Día', 'Minimalista', 'Casual'],
+    tags: ['Elegante', 'Noche', 'Moderno'],
+    badge: 'Nuevo'
+  },
+  {
+    id: '2',
+    sku: 'SD-001',
+    name: 'Sandalia Blanca Cruzada',
+    slug: 'sandalia-blanca-cruzada',
+    price: 99.90,
+    type: 'Sandalias bajas',
+    color: 'Blanco / Negro',
+    material: 'Cuero',
+    heelHeight: 'Plana',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Mule plana de punta cuadrada en blanco con tiras cruzadas en negro. Fresca, cómoda y perfecta para cualquier look de verano.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sandalias%20portada.png-aMIKE3lJv9UmLAIovjsPkY3HCeywHs.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalias%201-ht9pYCrYQNTUcJp42H8xoLbEcOwFw0.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalias%202-52wsZqTi7aqIfv8RdTTyrPjKXA0fec.jpeg'
+    ],
+    isAvailable: true,
+    tags: ['Día', 'Verano', 'Casual'],
     badge: 'Favorito de clientas'
   },
   {
-    id: '3',
-    sku: 'BT-021',
-    name: 'Bota Alta de Cuero',
-    slug: 'bota-alta-cuero',
-    price: 550,
-    type: 'Botas',
-    color: 'Negro',
-    material: 'Cuero',
-    heelHeight: '5 cm',
-    sizesAvailable: [37, 38, 39],
-    description: 'Estructura impecable y presencia imponente. Diseñadas para dominar la temporada con estilo y carácter.',
-    images: [
-      'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=800&auto=format&fit=crop'
-    ],
-    isAvailable: false,
-    tags: ['Invierno', 'Elegante', 'Premium']
-  },
-  {
-    id: '4',
-    sku: 'BL-004',
-    name: 'Balerina Clásica Beige',
-    slug: 'balerina-clasica-beige',
-    price: 290,
-    type: 'Balerinas',
-    color: 'Beige',
-    material: 'Cuero',
-    heelHeight: '1 cm',
-    sizesAvailable: [36, 37, 38, 39],
-    description: 'La gracia y delicadeza en su máxima expresión. Un básico indispensable que eleva cualquier conjunto casual.',
-    images: [
-      'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?q=80&w=800&auto=format&fit=crop'
-    ],
-    isAvailable: false,
-    tags: ['Oficina', 'Clásico', 'Cómodo']
-  },
-  {
     id: '5',
-    sku: 'PL-005',
-    name: 'Sandalia Plataforma Yute',
-    slug: 'sandalia-plataforma-yute',
-    price: 320,
-    type: 'Plataforma',
-    color: 'Blanco',
-    material: 'Tela y Yute',
-    heelHeight: '8 cm',
-    sizesAvailable: [36, 37, 38, 39],
-    description: 'Altura y comodidad en perfecta armonía. El toque de distinción para tus escapadas de fin de semana.',
+    sku: 'SD-002',
+    name: 'Sandalia Denim Baja',
+    slug: 'sandalia-denim-baja',
+    price: 99.90,
+    type: 'Sandalias bajas',
+    color: 'Azul / Crema',
+    material: 'Denim',
+    heelHeight: 'Plana',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Mule abierta de denim celeste con tira en V de cuero crema. Fresca y sofisticada, ideal para la temporada cálida.',
     images: [
-      'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=800&auto=format&fit=crop'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-MabSIIgItDeTYtpVIhIUwgeQtC0UPh.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sanda%20modelo%202%20.2.png-lK5hga42LE0s5hHQJ1jCPsNe13zoWW.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sanda%20modelo%202.3-kGTeTqPHyh1uZPFTHFUUxq099KRRL0.jpeg'
+    ],
+    isAvailable: true,
+    tags: ['Día', 'Verano', 'Casual'],
+    badge: 'Nuevo'
+  },
+  {
+    id: '3',
+    sku: 'SV-001',
+    name: 'Charlotte Jeans Celeste',
+    slug: 'charlotte-jeans-celeste',
+    price: 190,
+    type: 'Sandalias de vestir',
+    color: 'Azul celeste',
+    material: 'Denim',
+    heelHeight: '9 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Sandalia slingback de taco aguja en denim celeste con gran lazo en el empeine. Edición limitada, hecha a mano con materiales seleccionados.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_3yl1463yl1463yl1.png-uBnWczAR9IAbOUkCWEkUdLgQcMmlTG.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandaliasde%20vestir.png-G4RWxFJZp9xravgugRhjXOdlsUHR0r.jpeg'
     ],
     isAvailable: false,
-    tags: ['Verano', 'Playa', 'Casual']
+    tags: ['Noche', 'Elegante', 'Edición limitada'],
+    badge: 'Bajo pedido'
   },
   {
     id: '6',
-    sku: 'ST-002',
-    name: 'Estileto Rojo Carmesí',
-    slug: 'estileto-rojo-carmesi',
-    price: 380,
-    type: 'Estiletos',
-    color: 'Rojo',
-    material: 'Gamuza',
-    heelHeight: '9 cm',
-    sizesAvailable: [35, 36, 37, 38],
-    description: 'Audacia y sofisticación. Un par diseñado para ser el centro de todas las miradas.',
+    sku: 'SV-002',
+    name: 'Sandalia Plateada Espiral',
+    slug: 'sandalia-plateada-espiral',
+    price: 190,
+    type: 'Sandalias de vestir',
+    color: 'Plateado',
+    material: 'Cuero colombiano',
+    heelHeight: '7 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Sandalia de taco bloque plateado con tiras de strass en espiral que envuelven el tobillo. Cuero colombiano, suela noeli grabado antideslizante, forro y plantilla de polibadana.',
     images: [
-      'https://images.unsplash.com/photo-1568306360432-5201460391db?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1568306360432-5201460391db?q=80&w=800&auto=format&fit=crop'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalia%20de%20vestir%202.png-F7Rwm7RUoBzWEIIqTaodTHtX9pj6l7.jpeg'
     ],
-    isAvailable: true,
-    tags: ['Audaz', 'Noche', 'Elegante'],
-    badge: 'Nuevo'
-  }
+    isAvailable: false,
+    tags: ['Noche', 'Elegante', 'Fiesta'],
+    badge: 'Bajo pedido'
+  },
+  {
+    id: '7',
+    sku: 'SV-003',
+    name: 'Mule Croco Negra',
+    slug: 'mule-croco-negra',
+    price: 190,
+    type: 'Sandalias de vestir',
+    color: 'Negro',
+    material: 'Cuero grabado crocco',
+    heelHeight: '6 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Mule de punta cuadrada en cuero grabado negro con taco escultórico de silueta curva. Un diseño sofisticado y atemporal para ocasiones especiales.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalia%20de%20vestir%201.png-mU6gEc4dHsvP4PeFZfpkxfDHG1wOAW.jpeg'
+    ],
+    isAvailable: false,
+    tags: ['Noche', 'Elegante', 'Clásico'],
+    badge: 'Bajo pedido'
+  },
 ];
