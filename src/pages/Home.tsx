@@ -49,12 +49,11 @@ export default function Home() {
             loop
             muted
             playsInline
-            className="w-full h-full object-cover object-center"
+            preload="auto"
             poster="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop"
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           >
             <source src="/bubcle.mp4" type="video/mp4" />
-            {/* Fallback image if video fails */}
-            <img src="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop" alt="Mujer caminando con estilo" className="w-full h-full object-cover" />
           </video>
           <div className="absolute inset-0 bg-black/30" />
         </div>
