@@ -106,7 +106,7 @@ export const shoes: Shoe[] = [
     sku: 'SV-001',
     name: 'Charlotte Jeans Celeste',
     slug: 'charlotte-jeans-celeste',
-    price: 99.90,
+    price: 190,
     type: 'Sandalias de vestir',
     color: 'Azul celeste',
     material: 'Denim',
@@ -117,8 +117,46 @@ export const shoes: Shoe[] = [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_3yl1463yl1463yl1.png-uBnWczAR9IAbOUkCWEkUdLgQcMmlTG.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandaliasde%20vestir.png-G4RWxFJZp9xravgugRhjXOdlsUHR0r.jpeg'
     ],
-    isAvailable: true,
+    isAvailable: false,
     tags: ['Noche', 'Elegante', 'Edición limitada'],
-    badge: 'Nuevo'
+    badge: 'Bajo pedido'
+  },
+  {
+    id: '6',
+    sku: 'SV-002',
+    name: 'Sandalia Plateada Espiral',
+    slug: 'sandalia-plateada-espiral',
+    price: 190,
+    type: 'Sandalias de vestir',
+    color: 'Plateado',
+    material: 'Cuero colombiano',
+    heelHeight: '7 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Sandalia de taco bloque plateado con tiras de strass en espiral que envuelven el tobillo. Cuero colombiano, suela noeli grabado antideslizante, forro y plantilla de polibadana.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalia%20de%20vestir%202.png-F7Rwm7RUoBzWEIIqTaodTHtX9pj6l7.jpeg'
+    ],
+    isAvailable: false,
+    tags: ['Noche', 'Elegante', 'Fiesta'],
+    badge: 'Bajo pedido'
+  },
+  {
+    id: '7',
+    sku: 'SV-003',
+    name: 'Mule Croco Negra',
+    slug: 'mule-croco-negra',
+    price: 190,
+    type: 'Sandalias de vestir',
+    color: 'Negro',
+    material: 'Cuero grabado crocco',
+    heelHeight: '6 cm',
+    sizesAvailable: [35, 36, 37, 38, 39],
+    description: 'Mule de punta cuadrada en cuero grabado negro con taco escultórico de silueta curva. Un diseño sofisticado y atemporal para ocasiones especiales.',
+    images: [
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalia%20de%20vestir%201.png-mU6gEc4dHsvP4PeFZfpkxfDHG1wOAW.jpeg'
+    ],
+    isAvailable: false,
+    tags: ['Noche', 'Elegante', 'Clásico'],
+    badge: 'Bajo pedido'
   },
 ];
