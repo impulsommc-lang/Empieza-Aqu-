@@ -13,28 +13,18 @@ export default function Home() {
   const categories = [
     { 
       name: 'Estiletos', 
-      image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop',
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-A6tRhz5zyvIbYOLxzzhFeJxrCfdr7h.jpeg',
       available: true
     },
     { 
       name: 'Sandalias bajas', 
-      image: 'https://images.unsplash.com/photo-1562183241-b937e95585b6?q=80&w=800&auto=format&fit=crop',
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-wlLjBmRJV8rXaOwnAPE7MQl39FbNam.jpeg',
       available: true
     },
     { 
-      name: 'Botas', 
-      image: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=800&auto=format&fit=crop',
-      available: false
-    },
-    { 
-      name: 'Balerinas', 
-      image: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?q=80&w=800&auto=format&fit=crop',
-      available: false
-    },
-    { 
-      name: 'Plataforma', 
-      image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=800&auto=format&fit=crop',
-      available: false
+      name: 'Sandalias de vestir', 
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandaliasde%20vestir.png-G4RWxFJZp9xravgugRhjXOdlsUHR0r.jpeg',
+      available: true
     },
   ];
 
@@ -111,7 +101,7 @@ export default function Home() {
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-6">
           {categories.map((category, index) => (
             <motion.div
               key={category.name}
