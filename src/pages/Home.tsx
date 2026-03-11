@@ -23,7 +23,7 @@ export default function Home() {
     },
     { 
       name: 'Sandalias de vestir', 
-      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandaliasde%20vestir.png-G4RWxFJZp9xravgugRhjXOdlsUHR0r.jpeg',
+      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_3yl1463yl1463yl1.png-uBnWczAR9IAbOUkCWEkUdLgQcMmlTG.jpeg',
       available: true
     },
   ];
