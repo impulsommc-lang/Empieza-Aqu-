@@ -13,10 +13,10 @@ import shutil
 import os
 import sys
 
-PUBLIC_DIR = os.path.join(os.path.dirname(__file__), '..', 'public')
-INPUT  = os.path.abspath(os.path.join(PUBLIC_DIR, 'bubcle.mp4'))
-BACKUP = os.path.abspath(os.path.join(PUBLIC_DIR, 'bubcle.original.mp4'))
-OUTPUT = os.path.abspath(os.path.join(PUBLIC_DIR, 'bubcle.optimized.mp4'))
+PUBLIC_DIR = '/vercel/share/v0-project/public'
+INPUT  = os.path.join(PUBLIC_DIR, 'bubcle.mp4')
+BACKUP = os.path.join(PUBLIC_DIR, 'bubcle.original.mp4')
+OUTPUT = os.path.join(PUBLIC_DIR, 'bubcle.optimized.mp4')
 
 # Check ffmpeg is available
 if not shutil.which('ffmpeg'):
