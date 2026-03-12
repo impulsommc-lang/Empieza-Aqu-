@@ -199,19 +199,32 @@ export default function ProductDetail() {
                 <button className="text-xs text-neutral-500 underline hover:text-neutral-900 transition-colors">Guía de tallas</button>
               </div>
               <div className="flex flex-wrap gap-3">
-                {shoe.sizesAvailable.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`w-12 h-12 flex items-center justify-center rounded-full border text-sm transition-all duration-200 ${
-                      selectedSize === size 
-                        ? 'border-neutral-900 bg-neutral-900 text-white' 
-                        : 'border-neutral-300 text-neutral-900 bg-white hover:border-neutral-900'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {shoe.sizesAvailable.map((size) => {
+                  const isSoldOut = shoe.soldOutSizes?.includes(size);
+                  const isSelected = selectedSize === size;
+                  return (
+                    <button
+                      key={size}
+                      onClick={() => !isSoldOut && setSelectedSize(size)}
+                      disabled={isSoldOut}
+                      aria-label={isSoldOut ? `Talla ${size} agotada` : `Talla ${size}`}
+                      className={`relative w-12 h-12 flex items-center justify-center rounded-full border text-sm transition-all duration-200 ${
+                        isSoldOut
+                          ? 'border-neutral-200 text-neutral-300 bg-neutral-50 cursor-not-allowed'
+                          : isSelected
+                          ? 'border-neutral-900 bg-neutral-900 text-white'
+                          : 'border-neutral-300 text-neutral-900 bg-white hover:border-neutral-900'
+                      }`}
+                    >
+                      {size}
+                      {isSoldOut && (
+                        <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <span className="block w-8 h-px bg-neutral-300 rotate-45 absolute" />
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
               {!selectedSize && (
                 <p className="text-xs text-red-500 mt-2 opacity-0 transition-opacity" id="size-error">Selecciona una talla</p>

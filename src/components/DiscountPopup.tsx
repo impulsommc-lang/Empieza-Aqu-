@@ -22,7 +22,7 @@ export default function DiscountPopup() {
         localStorage.setItem('hasSeenDiscountPopup', 'true');
         setHasSeen(true);
       }
-    }, 40000); // 40 seconds
+    }, 30000); // 30 seconds
 
     return () => clearTimeout(timer);
   }, [hasSeen, discount]);
