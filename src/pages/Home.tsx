@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ShieldCheck, Star, Truck, HeartHandshake, ArrowRight } from 'lucide-react';
@@ -9,6 +10,19 @@ import DiscountPopup from '@/components/DiscountPopup';
 
 export default function Home() {
   const featuredShoes = shoes.slice(0, 4);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay blocked — video will show poster until user interacts
+      });
+    }
+  }, []);
 
   const categories = [
     { 
@@ -35,12 +49,12 @@ export default function Home() {
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            poster="https://images.unsplash.com/photo-1515347619362-7164bf45830c?q=80&w=2000&auto=format&fit=crop"
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           >
             <source src="/bubcle.mp4" type="video/mp4" />
@@ -118,6 +132,8 @@ export default function Home() {
                 <img
                   src={category.image}
                   alt={category.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   referrerPolicy="no-referrer"
                 />

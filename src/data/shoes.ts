@@ -9,6 +9,7 @@ export interface Shoe {
   material: string;
   heelHeight: string;
   sizesAvailable: number[];
+  soldOutSizes?: number[];
   description: string;
   images: string[];
   isAvailable: boolean;
@@ -28,6 +29,7 @@ export const shoes: Shoe[] = [
     material: 'Cuero',
     heelHeight: '4 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
+    soldOutSizes: [37],
     description: 'Mule de punta fina con doble tira de charol negro y taco bloque bajo. Elegancia discreta para el día a día.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-jBFGzBp3VYqIKYqNLCbwa9i2vP79Uw.jpeg',
@@ -49,6 +51,7 @@ export const shoes: Shoe[] = [
     material: 'Charol',
     heelHeight: '4 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
+    soldOutSizes: [37],
     description: 'Slingback de punta fina con múltiples tiras cruzadas y hebillas plateadas. Un diseño estructurado que combina modernidad y feminidad.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.2.png-XmCdQHzucR2hDZ1xL6BWXzY8kV7Xh0.jpeg',
@@ -91,6 +94,7 @@ export const shoes: Shoe[] = [
     material: 'Denim',
     heelHeight: 'Plana',
     sizesAvailable: [35, 36, 37, 38, 39],
+    soldOutSizes: [35],
     description: 'Mule abierta de denim celeste con tira en V de cuero crema. Fresca y sofisticada, ideal para la temporada cálida.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-MabSIIgItDeTYtpVIhIUwgeQtC0UPh.jpeg',

@@ -5,6 +5,7 @@ import { Menu, X, ShoppingBag, MessageCircle, Instagram, Facebook } from 'lucide
 import { getWhatsAppLink } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
 import CartDrawer from './CartDrawer';
+import SocialProofNotification from './SocialProofNotification';
 
 interface LayoutProps {
   children: ReactNode;
@@ -239,6 +240,9 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Cart Drawer */}
       <CartDrawer />
+
+      {/* Social Proof Notification */}
+      <SocialProofNotification />
     </div>
   );
 }
