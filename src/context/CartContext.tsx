@@ -13,6 +13,11 @@ interface CartContextType {
   isCartOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
+  isCheckoutOpen: boolean;
+  openCheckout: () => void;
+  closeCheckout: () => void;
+  checkoutShoe: { shoe: Shoe; size: number; quantity: number } | null;
+  setCheckoutShoe: (data: { shoe: Shoe; size: number; quantity: number } | null) => void;
   addToCart: (shoe: Shoe, size: number, quantity?: number) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
@@ -30,6 +35,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return savedCart ? JSON.parse(savedCart) : [];
   });
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [checkoutShoe, setCheckoutShoe] = useState<{ shoe: Shoe; size: number; quantity: number } | null>(null);
   const [discount, setDiscount] = useState<number>(() => {
     const savedDiscount = localStorage.getItem('cartDiscount');
     return savedDiscount ? Number(savedDiscount) : 0;
@@ -49,6 +56,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
+  const openCheckout = () => setIsCheckoutOpen(true);
+  const closeCheckout = () => { setIsCheckoutOpen(false); setCheckoutShoe(null); };
 
   const addToCart = (shoe: Shoe, size: number, quantity = 1) => {
     setItems((prevItems) => {
@@ -88,6 +97,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         isCartOpen,
         openCart,
         closeCart,
+        isCheckoutOpen,
+        openCheckout,
+        closeCheckout,
+        checkoutShoe,
+        setCheckoutShoe,
         addToCart,
         removeFromCart,
         updateQuantity,
