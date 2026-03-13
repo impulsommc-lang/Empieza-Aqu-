@@ -58,6 +58,7 @@ export default function ProductDetail() {
   };
 
   return (
+    <>
     <div className="bg-white min-h-screen py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -335,6 +336,6 @@ export default function ProductDetail() {
           Asegurar mi Talla &bull; S/ {(shoe.price * quantity).toFixed(2)}
         </button>
       </div>
-    </div>
+    </>
   );
 }
