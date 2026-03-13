@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, ShieldCheck, Truck, RotateCcw, CreditCard, Banknote, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Truck, RotateCcw, Banknote, MessageCircle, Phone } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { getWhatsAppLink } from '@/lib/utils';
 
@@ -9,15 +9,16 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { items, cartTotal, cartCount, closeCart, discount } = useCart();
   
-  const [paymentMethod, setPaymentMethod] = useState<'transferencia' | 'yape' | 'otros' | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'transferencia' | 'yape' | 'contra-entrega' | null>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    phone: '',
     address: '',
     city: '',
     district: '',
     reference: '',
-    region: 'lima', // Added region
+    region: 'lima',
   });
   
   const shippingCost = cartCount >= 2 ? 0 : formData.region === 'lima' ? 15 : 30;
@@ -40,7 +41,8 @@ export default function Checkout() {
     let message = `*NUEVO PEDIDO*\n\n`;
     
     message += `*Cliente:* ${formData.firstName} ${formData.lastName}\n`;
-    message += `*Dirección de Envío:*\n`;
+    if (formData.phone) message += `*Celular:* ${formData.phone}\n`;
+    message += `*Direccion de Envio:*\n`;
     message += `${formData.address}, ${formData.district}, ${formData.city} (${formData.region === 'lima' ? 'Lima' : 'Provincia'})\n`;
     if (formData.reference) message += `Ref: ${formData.reference}\n\n`;
     
@@ -99,8 +101,8 @@ export default function Checkout() {
           <div className="lg:w-3/5 space-y-10">
             
             {/* Shipping Info */}
-            <section className="bg-white p-8 rounded-2xl shadow-sm border border-neutral-100">
-              <h2 className="text-lg font-serif font-medium text-neutral-900 mb-6">Dirección de Envío</h2>
+            <section className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-neutral-100">
+              <h2 className="text-lg font-serif font-medium text-neutral-900 mb-6">Donde enviamos tus AMIRAH?</h2>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="relative">
@@ -114,7 +116,7 @@ export default function Checkout() {
                       className="block px-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
                       placeholder=" "
                     />
-                    <label htmlFor="firstName" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Nombre</label>
+                    <label htmlFor="firstName" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Tu nombre</label>
                   </div>
                   <div className="relative">
                     <input
@@ -127,9 +129,28 @@ export default function Checkout() {
                       className="block px-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
                       placeholder=" "
                     />
-                    <label htmlFor="lastName" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Apellidos</label>
+                    <label htmlFor="lastName" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Tus apellidos</label>
                   </div>
                 </div>
+
+                {/* Phone with icon */}
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none z-10">
+                    <Phone size={16} />
+                  </span>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="block pl-10 pr-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
+                    placeholder=" "
+                  />
+                  <label htmlFor="phone" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Tu celular para coordinar</label>
+                </div>
+
                 <div className="relative">
                   <input
                     type="text"
@@ -141,7 +162,7 @@ export default function Checkout() {
                     className="block px-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
                     placeholder=" "
                   />
-                  <label htmlFor="address" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Dirección completa</label>
+                  <label htmlFor="address" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Calle, numero y urbanizacion</label>
                 </div>
                 <div className="relative">
                   <input
@@ -153,7 +174,7 @@ export default function Checkout() {
                     className="block px-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
                     placeholder=" "
                   />
-                  <label htmlFor="reference" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Referencia (Opcional)</label>
+                  <label htmlFor="reference" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Referencia para el delivery (opcional)</label>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="relative">
@@ -168,7 +189,7 @@ export default function Checkout() {
                       <option value="lima">Lima</option>
                       <option value="provincia">Provincia</option>
                     </select>
-                    <label htmlFor="region" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Región</label>
+                    <label htmlFor="region" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">Region</label>
                   </div>
                   <div className="relative">
                     <input
@@ -200,45 +221,85 @@ export default function Checkout() {
               </div>
             </section>
 
-            {/* Payment Method */}
-            <section className="bg-white p-8 rounded-2xl shadow-sm border border-neutral-100">
-              <h2 className="text-lg font-serif font-medium text-neutral-900 mb-6">Método de Pago</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('transferencia')}
-                  className={`flex flex-col items-center justify-center p-6 rounded-xl border-2 transition-all duration-200 ${
-                    paymentMethod === 'transferencia' ? 'border-neutral-900 bg-neutral-50' : 'border-neutral-100 bg-white hover:border-neutral-300'
-                  }`}
-                >
-                  <Banknote size={24} className={`mb-3 ${paymentMethod === 'transferencia' ? 'text-neutral-900' : 'text-neutral-400'}`} />
-                  <span className="text-sm font-medium text-neutral-900 text-center">Transferencia Bancaria</span>
-                </button>
+            {/* Payment Method — Radio Cards */}
+            <section className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-neutral-100">
+              <h2 className="text-lg font-serif font-medium text-neutral-900 mb-2">Como prefieres pagar?</h2>
+              <p className="text-xs text-neutral-400 mb-6">Coordinamos los detalles contigo por WhatsApp.</p>
+              <div className="grid grid-cols-1 gap-3">
+                {/* Yape / Plin — highlighted */}
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('yape')}
-                  className={`flex flex-col items-center justify-center p-6 rounded-xl border-2 transition-all duration-200 ${
-                    paymentMethod === 'yape' ? 'border-[#742384] bg-[#742384]/5' : 'border-neutral-100 bg-white hover:border-neutral-300'
+                  className={`relative flex items-center gap-4 p-5 rounded-xl border-2 transition-all duration-200 text-left ${
+                    paymentMethod === 'yape'
+                      ? 'border-[#742384] bg-[#742384]/5 shadow-sm'
+                      : 'border-neutral-100 bg-white hover:border-neutral-300'
                   }`}
                 >
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center mb-3 ${paymentMethod === 'yape' ? 'bg-[#742384]' : 'bg-neutral-400'}`}>
-                    <span className="text-white text-xs font-bold">Y</span>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${paymentMethod === 'yape' ? 'bg-[#742384]' : 'bg-neutral-100'}`}>
+                    <span className={`text-sm font-bold ${paymentMethod === 'yape' ? 'text-white' : 'text-neutral-500'}`}>Y</span>
                   </div>
-                  <span className="text-sm font-medium text-neutral-900 text-center">Yape / Plin</span>
+                  <div>
+                    <p className="font-semibold text-sm text-neutral-900">Yape / Plin</p>
+                    <p className="text-xs text-neutral-500">Pago instantaneo y seguro</p>
+                  </div>
+                  {paymentMethod === 'yape' && (
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 bg-[#742384] rounded-full flex items-center justify-center">
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </span>
+                  )}
                 </button>
+
+                {/* Transferencia */}
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod('otros')}
-                  className={`flex flex-col items-center justify-center p-6 rounded-xl border-2 transition-all duration-200 ${
-                    paymentMethod === 'otros' ? 'border-neutral-900 bg-neutral-50' : 'border-neutral-100 bg-white hover:border-neutral-300'
+                  onClick={() => setPaymentMethod('transferencia')}
+                  className={`relative flex items-center gap-4 p-5 rounded-xl border-2 transition-all duration-200 text-left ${
+                    paymentMethod === 'transferencia'
+                      ? 'border-neutral-900 bg-neutral-50 shadow-sm'
+                      : 'border-neutral-100 bg-white hover:border-neutral-300'
                   }`}
                 >
-                  <CreditCard size={24} className={`mb-3 ${paymentMethod === 'otros' ? 'text-neutral-900' : 'text-neutral-400'}`} />
-                  <span className="text-sm font-medium text-neutral-900 text-center">Otras Tarjetas</span>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${paymentMethod === 'transferencia' ? 'bg-neutral-900' : 'bg-neutral-100'}`}>
+                    <Banknote size={18} className={paymentMethod === 'transferencia' ? 'text-white' : 'text-neutral-500'} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm text-neutral-900">Transferencia</p>
+                    <p className="text-xs text-neutral-500">BCP, Interbank, BBVA</p>
+                  </div>
+                  {paymentMethod === 'transferencia' && (
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 bg-neutral-900 rounded-full flex items-center justify-center">
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </span>
+                  )}
+                </button>
+
+                {/* Contra entrega */}
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod('contra-entrega')}
+                  className={`relative flex items-center gap-4 p-5 rounded-xl border-2 transition-all duration-200 text-left ${
+                    paymentMethod === 'contra-entrega'
+                      ? 'border-neutral-900 bg-neutral-50 shadow-sm'
+                      : 'border-neutral-100 bg-white hover:border-neutral-300'
+                  }`}
+                >
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${paymentMethod === 'contra-entrega' ? 'bg-neutral-900' : 'bg-neutral-100'}`}>
+                    <Truck size={18} className={paymentMethod === 'contra-entrega' ? 'text-white' : 'text-neutral-500'} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm text-neutral-900">Pago Contra Entrega</p>
+                    <p className="text-xs text-neutral-500">Pagas cuando recibas tu pedido</p>
+                  </div>
+                  {paymentMethod === 'contra-entrega' && (
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 bg-neutral-900 rounded-full flex items-center justify-center">
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </span>
+                  )}
                 </button>
               </div>
               {!paymentMethod && (
-                <p className="text-sm text-neutral-500 mt-4 text-center">Selecciona un método para continuar con el pago.</p>
+                <p className="text-sm text-neutral-400 mt-4 text-center">Selecciona como quieres pagar.</p>
               )}
             </section>
 
@@ -299,12 +360,17 @@ export default function Checkout() {
                 <p className="text-xs text-neutral-500 mt-2 text-right">Incluye impuestos</p>
               </div>
 
+              {/* Risk Reversal */}
+              <p className="text-xs text-neutral-400 text-center mb-4 px-2">
+                No realizas ningun pago ahora. Garantizamos tu talla y coordinamos los detalles de forma segura.
+              </p>
+
               <button
                 type="submit"
-                className="w-full flex items-center justify-center space-x-2 bg-neutral-900 text-white py-4 px-8 rounded-xl text-sm font-medium uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-4 px-8 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-[#20bd5a] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                <MessageCircle size={18} />
-                <span>Confirmar por WhatsApp</span>
+                <MessageCircle size={20} />
+                <span>Confirmar Pedido por WhatsApp</span>
               </button>
 
               {/* Trust Signals */}

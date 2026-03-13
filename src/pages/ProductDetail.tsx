@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Check, AlertCircle, ArrowLeft, Clock, Truck, ShieldCheck, RotateCcw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, AlertCircle, ArrowLeft, Clock, Truck, ShieldCheck, PackageOpen } from 'lucide-react';
 import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
@@ -58,6 +58,7 @@ export default function ProductDetail() {
   };
 
   return (
+    <>
     <div className="bg-white min-h-screen py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -157,16 +158,27 @@ export default function ProductDetail() {
               <p className="text-xs text-neutral-500 uppercase tracking-widest font-medium">{shoe.type}</p>
               <p className="text-xs text-neutral-400 font-mono">SKU: {shoe.sku}</p>
             </div>
+
+            {/* Scarcity badge */}
+            <div className="mb-3">
+              <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest">
+                <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+                Alta demanda — Edicion Limitada
+              </span>
+            </div>
             
             <h1 className="text-3xl lg:text-4xl font-serif font-light text-neutral-900 mb-4 tracking-tight uppercase">
               {shoe.name}
             </h1>
             
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-1">
               <span className="text-2xl font-medium text-neutral-900">S/ {shoe.price.toFixed(2)}</span>
             </div>
 
-            <div className="mb-6 flex items-center text-xs text-[#D4A373] uppercase tracking-widest font-medium">
+            {/* Urgency micro-copy */}
+            <p className="text-sm text-[#D4A373] font-medium mb-4">Solo quedan 2 pares en tu talla.</p>
+
+            <div className="mb-6 flex items-center text-xs text-neutral-400 uppercase tracking-widest font-medium">
               <Clock size={14} className="mr-1" /> Alta demanda esta semana
             </div>
 
@@ -253,35 +265,29 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="mt-auto flex flex-col gap-4 mb-8">
+            {/* Actions — desktop inline button */}
+            <div className="hidden lg:flex flex-col gap-4 mb-8">
               <button
                 onClick={handleAddToCart}
                 className="w-full flex items-center justify-center bg-neutral-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 rounded-xl"
               >
-                Añadir al carrito • S/ {(shoe.price * quantity).toFixed(2)}
+                Asegurar mi Talla &bull; S/ {(shoe.price * quantity).toFixed(2)}
               </button>
             </div>
 
-            {/* AOV Incentive */}
-            <div className="mb-8 p-4 bg-neutral-50 border border-neutral-100 rounded-xl text-center">
-              <p className="text-sm text-neutral-700 italic">
-                "Muchas clientas aprovechan y llevan 2 pares para obtener envío gratis."
-              </p>
-            </div>
-
-            {/* Trust Badges & Shipping Info */}
-            <div className="grid grid-cols-1 gap-4 py-6 border-t border-neutral-100">
-              <div className="flex items-start text-sm text-neutral-600">
-                <Truck size={18} className="mr-3 text-neutral-400 mt-0.5" strokeWidth={1.5} />
-                <div>
-                  <span className="block font-medium text-neutral-900 mb-1">Compra 2 pares o más y recibe envío gratis.</span>
-                  <span className="block text-xs font-light">Envío 1 par: Lima S/ 15 | Provincia S/ 30</span>
-                </div>
+            {/* Trust Signals */}
+            <div className="grid grid-cols-1 gap-3 py-6 border-t border-neutral-100 mb-8">
+              <div className="flex items-center gap-3 text-sm text-neutral-600">
+                <Truck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
+                <span>Envio a todo el pais.</span>
               </div>
-              <div className="flex items-center text-sm text-neutral-600">
-                <ShieldCheck size={18} className="mr-3 text-neutral-400" strokeWidth={1.5} />
-                <span>Pago 100% seguro y encriptado</span>
+              <div className="flex items-center gap-3 text-sm text-neutral-600">
+                <ShieldCheck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
+                <span>Pago 100% seguro al coordinar.</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-neutral-600">
+                <PackageOpen size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
+                <span>Primer cambio de talla GRATIS.</span>
               </div>
             </div>
 
@@ -320,5 +326,16 @@ export default function ProductDetail() {
         )}
       </div>
     </div>
+
+      {/* Sticky CTA — mobile only */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-neutral-100 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        <button
+          onClick={handleAddToCart}
+          className="w-full flex items-center justify-center bg-neutral-900 text-white py-4 rounded-xl text-sm font-semibold uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300"
+        >
+          Asegurar mi Talla &bull; S/ {(shoe.price * quantity).toFixed(2)}
+        </button>
+      </div>
+    </>
   );
 }
