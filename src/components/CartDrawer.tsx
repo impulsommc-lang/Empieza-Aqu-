@@ -47,21 +47,17 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            {/* Free Shipping Progress */}
-            <div className="p-6 bg-neutral-50/50 border-b border-neutral-100">
-              <p className="text-sm text-neutral-600 mb-3 text-center">
-                {cartCount < 2 ? (
-                  <>¡Agrega <span className="font-semibold text-neutral-900">1 par más</span> para obtener envío gratis!</>
-                ) : (
-                  <span className="font-semibold text-emerald-600">¡Disfrutas de envío gratis!</span>
-                )}
+            {/* Upsell header with progress bar */}
+            <div className="p-5 bg-neutral-50/50 border-b border-neutral-100">
+              <p className="text-sm text-neutral-700 font-medium mb-3 text-center">
+                Te faltan solo <span className="font-bold text-neutral-900">S/ 99.90</span> para desbloquear ENVIO GRATIS a todo el Peru.
               </p>
-              <div className="h-1 w-full bg-neutral-200 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-neutral-200 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(100, (cartCount / 2) * 100)}%` }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className="h-full bg-neutral-900"
+                  animate={{ width: '50%' }}
+                  transition={{ duration: 0.7, ease: 'easeOut' }}
+                  className="h-full bg-[#D4A373] rounded-full"
                 />
               </div>
             </div>
@@ -176,7 +172,7 @@ export default function CartDrawer() {
                   onClick={handleCheckout}
                   className="w-full bg-neutral-900 text-white py-4 rounded-xl text-sm font-medium uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
-                  Finalizar Compra
+                  Ir al Checkout Seguro
                 </button>
               </div>
             )}

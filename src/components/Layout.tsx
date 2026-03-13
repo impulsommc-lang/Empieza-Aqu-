@@ -1,7 +1,6 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ShoppingBag, MessageCircle, Instagram, Facebook } from 'lucide-react';
+import { ShoppingBag, MessageCircle, Instagram, Facebook } from 'lucide-react';
 import { getWhatsAppLink } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
 import CartDrawer from './CartDrawer';
@@ -12,24 +11,14 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { openCart, cartCount } = useCart();
 
   const isCheckout = location.pathname === '/checkout';
 
-  // Close mobile menu on route change
   useEffect(() => {
-    setIsMobileMenuOpen(false);
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  const navLinks = [
-    { name: 'Inicio', path: '/' },
-    { name: 'Colección', path: '/zapatos' },
-    { name: 'Nosotros', path: '/nosotros' },
-    { name: 'Contacto', path: '/contacto' },
-  ];
 
   if (isCheckout) {
     return (
@@ -53,99 +42,29 @@ export default function Layout({ children }: LayoutProps) {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#F5F5F0]/80 backdrop-blur-md border-b border-neutral-200">
+      {/* Header — ultra minimal sticky glassmorphism */}
+      <header className="sticky top-0 z-50 bg-[#F5F5F0]/80 backdrop-blur-md border-b border-neutral-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Mobile menu button */}
-            <div className="flex items-center md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-neutral-900 hover:text-neutral-600 focus:outline-none"
-              >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-
-            {/* Logo */}
-            <div className="flex-shrink-0 flex items-center justify-center md:justify-start flex-1 md:flex-none">
-              <Link to="/" className="text-2xl font-serif tracking-tighter uppercase font-bold text-neutral-900">
-                AMIRAH<span className="text-[#D4A373]">.</span>
-              </Link>
-            </div>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className={`text-sm tracking-wide uppercase transition-colors duration-200 ${
-                    location.pathname === link.path
-                      ? 'text-neutral-900 font-medium border-b-2 border-neutral-900 pb-1'
-                      : 'text-neutral-500 hover:text-neutral-900'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Right Icons */}
-            <div className="flex items-center space-x-4">
-              <a
-                href={getWhatsAppLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden md:flex items-center space-x-2 text-sm font-medium bg-neutral-900 text-white px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
-              >
-                <MessageCircle size={16} />
-                <span>Asesoría</span>
-              </a>
-              <button onClick={openCart} className="text-neutral-900 hover:text-neutral-600 relative">
-                <ShoppingBag size={24} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#D4A373] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
+          <div className="flex items-center justify-center h-16 relative">
+            {/* Logo — centered */}
+            <Link to="/" className="text-2xl font-serif tracking-tighter uppercase font-bold text-neutral-900">
+              AMIRAH<span className="text-[#D4A373]">.</span>
+            </Link>
+            {/* Cart icon — absolute right */}
+            <button
+              onClick={openCart}
+              className="absolute right-0 text-neutral-900 hover:text-neutral-600 relative p-1"
+              aria-label="Abrir carrito"
+            >
+              <ShoppingBag size={22} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#D4A373] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-[#F5F5F0] border-b border-neutral-200 overflow-hidden"
-            >
-              <div className="px-4 pt-2 pb-6 space-y-1">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    className="block px-3 py-4 text-base font-medium text-neutral-900 border-b border-neutral-200 uppercase tracking-wider"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-                <a
-                  href={getWhatsAppLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 flex items-center justify-center space-x-2 w-full bg-[#25D366] text-white px-4 py-3 rounded-md font-medium"
-                >
-                  <MessageCircle size={20} />
-                  <span>Comprar por WhatsApp</span>
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </header>
 
       {/* Main Content */}
