@@ -4,6 +4,13 @@ import { X, Phone, Banknote, Truck, MessageCircle, ShieldCheck } from 'lucide-re
 import { useCart } from '@/context/CartContext';
 import { getWhatsAppLink } from '@/lib/utils';
 
+// Facebook Pixel type shim
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
 export default function CheckoutModal() {
   const { isCheckoutOpen, closeCheckout, checkoutShoe, discount } = useCart();
 
@@ -39,6 +46,17 @@ export default function CheckoutModal() {
     if (discount > 0) message += `*Descuento:* -S/ ${discount.toFixed(2)}\n`;
     message += `*Total:* S/ ${finalTotal.toFixed(2)}\n\n`;
     message += `*Metodo de pago:* ${paymentMethod.toUpperCase()}\n`;
+
+    // Facebook Pixel — Purchase (fires when user taps the WhatsApp confirm button)
+    window.fbq?.('track', 'Purchase', {
+      content_name: shoe.name,
+      content_ids: [shoe.sku],
+      content_type: 'product',
+      num_items: quantity,
+      value: finalTotal,
+      currency: 'PEN',
+    });
+
     window.open(getWhatsAppLink(message), '_blank');
     closeCheckout();
   };

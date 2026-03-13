@@ -6,6 +6,13 @@ import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
 
+// Facebook Pixel type shim
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -26,6 +33,18 @@ export default function ProductDetail() {
     setQuantity(1);
     setSizeError(false);
   }, [slug]);
+
+  // Facebook Pixel — ViewContent when product page loads
+  useEffect(() => {
+    if (!shoe) return;
+    window.fbq?.('track', 'ViewContent', {
+      content_name: shoe.name,
+      content_ids: [shoe.sku],
+      content_type: 'product',
+      value: shoe.price,
+      currency: 'PEN',
+    });
+  }, [shoe]);
 
   if (!shoe) {
     return (
@@ -53,6 +72,15 @@ export default function ProductDetail() {
       return;
     }
     setSizeError(false);
+    // Facebook Pixel — InitiateCheckout
+    window.fbq?.('track', 'InitiateCheckout', {
+      content_name: shoe.name,
+      content_ids: [shoe.sku],
+      content_type: 'product',
+      num_items: quantity,
+      value: shoe.price * quantity,
+      currency: 'PEN',
+    });
     setCheckoutShoe({ shoe, size: selectedSize, quantity });
     openCheckout();
   };
