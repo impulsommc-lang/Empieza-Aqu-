@@ -1,9 +1,9 @@
 import { ReactNode, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, MessageCircle, Instagram, Facebook } from 'lucide-react';
+import { MessageCircle, Instagram, Facebook } from 'lucide-react';
 import { getWhatsAppLink } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
-import CartDrawer from './CartDrawer';
+import CheckoutModal from './CheckoutModal';
 import SocialProofNotification from './SocialProofNotification';
 
 interface LayoutProps {
@@ -12,7 +12,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const { openCart, cartCount } = useCart();
+  const { } = useCart(); // keep context alive
 
   const isCheckout = location.pathname === '/checkout';
 
@@ -24,7 +24,7 @@ export default function Layout({ children }: LayoutProps) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F5F5F0] font-sans text-neutral-900">
         <main className="flex-grow">{children}</main>
-        <CartDrawer />
+        <CheckoutModal />
       </div>
     );
   }
@@ -45,24 +45,11 @@ export default function Layout({ children }: LayoutProps) {
       {/* Header — ultra minimal sticky glassmorphism */}
       <header className="sticky top-0 z-50 bg-[#F5F5F0]/80 backdrop-blur-md border-b border-neutral-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center h-16 relative">
+          <div className="flex items-center justify-center h-16">
             {/* Logo — centered */}
             <Link to="/" className="text-2xl font-serif tracking-tighter uppercase font-bold text-neutral-900">
               AMIRAH<span className="text-[#D4A373]">.</span>
             </Link>
-            {/* Cart icon — absolute right */}
-            <button
-              onClick={openCart}
-              className="absolute right-0 text-neutral-900 hover:text-neutral-600 relative p-1"
-              aria-label="Abrir carrito"
-            >
-              <ShoppingBag size={22} />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#D4A373] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
           </div>
         </div>
       </header>
@@ -157,8 +144,8 @@ export default function Layout({ children }: LayoutProps) {
         <MessageCircle size={28} />
       </a>
 
-      {/* Cart Drawer */}
-      <CartDrawer />
+      {/* Checkout Modal */}
+      <CheckoutModal />
 
       {/* Social Proof Notification */}
       <SocialProofNotification />
