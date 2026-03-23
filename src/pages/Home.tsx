@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ShieldCheck, Star, Truck, HeartHandshake, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Star, Truck, HeartHandshake, ArrowRight, Lock, RotateCcw, BadgeCheck } from 'lucide-react';
 import { getWhatsAppLink } from '@/lib/utils';
 import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
@@ -67,18 +67,18 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-light text-white mb-6 leading-tight tracking-tight drop-shadow-lg"
+            className="text-5xl md:text-7xl lg:text-8xl font-serif font-light text-white mb-6 leading-tight tracking-tight drop-shadow-lg text-balance"
           >
-            Eleva tu estilo <br className="hidden md:block" />
-            <span className="italic font-normal">sin esfuerzo</span>
+            El par que te hace <br className="hidden md:block" />
+            <span className="italic font-normal">sentir irresistible</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-lg md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto font-light tracking-wide drop-shadow-md"
+            className="text-lg md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto font-light tracking-wide drop-shadow-md text-balance"
           >
-            Siente que tu outfit está completo. Camina con la seguridad y elegancia que te mereces cada día.
+            Zapatos que combinan con todo, duran mas y elevan cualquier look. Ediciones limitadas para mujeres que saben lo que quieren.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -96,15 +96,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Social proof bar */}
+      <section className="py-3 bg-neutral-900 text-white overflow-hidden">
+        <div className="flex items-center gap-12 animate-[marquee_20s_linear_infinite] whitespace-nowrap w-max">
+          {[
+            'Mas de 500 clientas felices en Peru',
+            'Envio a todo el pais',
+            'Primer cambio de talla GRATIS',
+            'Pago seguro por WhatsApp',
+            'Ediciones limitadas — stocks reducidos',
+            'Mas de 500 clientas felices en Peru',
+            'Envio a todo el pais',
+            'Primer cambio de talla GRATIS',
+            'Pago seguro por WhatsApp',
+            'Ediciones limitadas — stocks reducidos',
+          ].map((text, i) => (
+            <span key={i} className="text-xs uppercase tracking-widest font-light flex items-center gap-4">
+              {text} <span className="text-[#D4A373]">&#9679;</span>
+            </span>
+          ))}
+        </div>
+      </section>
+
       {/* Categorías Destacadas */}
       <section className="py-32 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto w-full bg-white">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20">
           <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-serif font-light text-neutral-900 mb-6 tracking-tight">
-              Nuestras Siluetas
+            <h2 className="text-4xl md:text-5xl font-serif font-light text-neutral-900 mb-6 tracking-tight text-balance">
+              Disena tu presencia
             </h2>
             <p className="text-neutral-500 font-light text-lg leading-relaxed">
-              Diseños atemporales creados para realzar tu feminidad. Descubre las piezas que definirán tu estilo esta temporada.
+              Cada silueta esta pensada para una mujer que quiere verse increible sin complicarse. Elige el estilo que habla por ti.
             </p>
           </div>
           <Link
@@ -170,7 +192,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl font-serif font-bold text-neutral-900 mb-4">Nuevos Modelos</h2>
+              <h2 className="text-3xl font-serif font-bold text-neutral-900 mb-4 text-balance">Lo que todas quieren</h2>
               <div className="w-16 h-0.5 bg-[#D4A373]" />
             </div>
             <Link
@@ -206,29 +228,29 @@ export default function Home() {
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-[#D4A373]">
                 <Star size={28} />
               </div>
-              <h3 className="font-medium text-neutral-900 mb-2">Diseños modernos</h3>
-              <p className="text-sm text-neutral-500">A la vanguardia de la moda actual</p>
+              <h3 className="font-medium text-neutral-900 mb-2">Modelos que no ves en otro lado</h3>
+              <p className="text-sm text-neutral-500">Ediciones limitadas, pensadas para destacar</p>
             </div>
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-[#D4A373]">
-                <ShieldCheck size={28} />
+                <Lock size={28} />
               </div>
-              <h3 className="font-medium text-neutral-900 mb-2">Selección exclusiva</h3>
-              <p className="text-sm text-neutral-500">Materiales de primera calidad</p>
+              <h3 className="font-medium text-neutral-900 mb-2">Compra 100% segura</h3>
+              <p className="text-sm text-neutral-500">Coordinas directo con nosotras. Sin apps, sin riesgo</p>
             </div>
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-[#D4A373]">
-                <HeartHandshake size={28} />
+                <RotateCcw size={28} />
               </div>
-              <h3 className="font-medium text-neutral-900 mb-2">Atención personalizada</h3>
-              <p className="text-sm text-neutral-500">Asesoría directa por WhatsApp</p>
+              <h3 className="font-medium text-neutral-900 mb-2">Primer cambio GRATIS</h3>
+              <p className="text-sm text-neutral-500">Si la talla no es la correcta, lo cambiamos sin costo</p>
             </div>
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-[#D4A373]">
                 <Truck size={28} />
               </div>
-              <h3 className="font-medium text-neutral-900 mb-2">Envíos rápidos</h3>
-              <p className="text-sm text-neutral-500">Entregas seguras a todo el país</p>
+              <h3 className="font-medium text-neutral-900 mb-2">Envio a todo el Peru</h3>
+              <p className="text-sm text-neutral-500">Lima y provincias. Gratis comprando 2 pares o mas</p>
             </div>
           </div>
         </div>
@@ -238,12 +260,12 @@ export default function Home() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-serif font-bold text-neutral-900 mb-4">Cómo Comprar</h2>
-            <div className="w-16 h-0.5 bg-[#D4A373] mx-auto mb-6" />
-            <p className="text-neutral-500 max-w-2xl mx-auto">
-              Un proceso simple y directo para que tengas tus zapatos favoritos en casa.
-            </p>
-          </div>
+              <h2 className="text-3xl font-serif font-bold text-neutral-900 mb-4">Tan facil como elegir tu talla</h2>
+              <div className="w-16 h-0.5 bg-[#D4A373] mx-auto mb-6" />
+              <p className="text-neutral-500 max-w-2xl mx-auto">
+                Sin complicaciones. Sin apps. Sin sorpresas. Solo tu par favorito llegando a tu puerta.
+              </p>
+            </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
             <div className="hidden md:block absolute top-1/2 left-1/6 right-1/6 h-0.5 bg-neutral-100 -z-10" />
@@ -252,24 +274,24 @@ export default function Home() {
               <div className="w-16 h-16 bg-neutral-900 text-white rounded-full flex items-center justify-center text-2xl font-serif font-bold mb-6 shadow-md">
                 1
               </div>
-              <h3 className="text-xl font-medium text-neutral-900 mb-3">Elige tu modelo</h3>
-              <p className="text-neutral-500">Explora nuestro catálogo y selecciona el zapato que más te guste.</p>
+              <h3 className="text-xl font-medium text-neutral-900 mb-3">Elige tu modelo favorito</h3>
+              <p className="text-neutral-500">Explora el catalogo, revisa los detalles y elige la talla que mas te favorece.</p>
             </div>
             
             <div className="flex flex-col items-center text-center bg-white">
               <div className="w-16 h-16 bg-neutral-900 text-white rounded-full flex items-center justify-center text-2xl font-serif font-bold mb-6 shadow-md">
                 2
               </div>
-              <h3 className="text-xl font-medium text-neutral-900 mb-3">Escríbenos</h3>
-              <p className="text-neutral-500">Haz clic en el botón de WhatsApp desde la página del producto.</p>
+              <h3 className="text-xl font-medium text-neutral-900 mb-3">Haz tu pedido en segundos</h3>
+              <p className="text-neutral-500">Haz clic en "Comprar Ahora", completa tus datos y te llegara un mensaje directo por WhatsApp.</p>
             </div>
             
             <div className="flex flex-col items-center text-center bg-white">
               <div className="w-16 h-16 bg-[#D4A373] text-white rounded-full flex items-center justify-center text-2xl font-serif font-bold mb-6 shadow-md">
                 3
               </div>
-              <h3 className="text-xl font-medium text-neutral-900 mb-3">Confirma y recibe</h3>
-              <p className="text-neutral-500">Coordinamos la disponibilidad, el pago y el envío directamente contigo.</p>
+              <h3 className="text-xl font-medium text-neutral-900 mb-3">Recibe y luce tus AMIRAH</h3>
+              <p className="text-neutral-500">Coordinamos el pago y el envio. Tu par llega embalado con cuidado, listo para usarse.</p>
             </div>
           </div>
         </div>
@@ -278,30 +300,53 @@ export default function Home() {
       {/* Testimonios */}
       <Testimonials />
 
+      {/* Risk reversal strip */}
+      <section className="py-12 bg-neutral-900 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="flex flex-col items-center gap-3">
+              <BadgeCheck size={28} className="text-[#D4A373]" />
+              <p className="text-sm font-medium uppercase tracking-widest">Primer cambio de talla gratis</p>
+              <p className="text-xs text-neutral-400">Sin costos escondidos, sin burocracia</p>
+            </div>
+            <div className="flex flex-col items-center gap-3">
+              <Lock size={28} className="text-[#D4A373]" />
+              <p className="text-sm font-medium uppercase tracking-widest">No pagas nada hasta confirmar</p>
+              <p className="text-xs text-neutral-400">Coordinas todo por WhatsApp antes de pagar</p>
+            </div>
+            <div className="flex flex-col items-center gap-3">
+              <HeartHandshake size={28} className="text-[#D4A373]" />
+              <p className="text-sm font-medium uppercase tracking-widest">Atencion humana, siempre</p>
+              <p className="text-xs text-neutral-400">Una persona real responde tus dudas</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Preguntas Frecuentes */}
       <section className="py-20 bg-[#F5F5F0]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif font-bold text-neutral-900 mb-4">Preguntas Frecuentes</h2>
+            <h2 className="text-3xl font-serif font-bold text-neutral-900 mb-4">Resolvemos tus dudas</h2>
             <div className="w-16 h-0.5 bg-[#D4A373] mx-auto" />
           </div>
           
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl shadow-sm">
-              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Tienen todas las tallas?</h3>
-              <p className="text-neutral-600">Trabajamos con tallas desde la 35 hasta la 40 en la mayoría de nuestros modelos. La disponibilidad exacta se muestra en cada producto y se confirma por WhatsApp.</p>
+              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Las tallas son exactas o debo pedir una mas grande?</h3>
+              <p className="text-neutral-600">Nuestros modelos calzan a talla exacta. Si estas entre dos tallas, te recomendamos la mas grande. Puedes escribirnos por WhatsApp y te asesoramos segun el modelo que hayas elegido.</p>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-sm">
-              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Realizan envíos?</h3>
-              <p className="text-neutral-600">Sí, realizamos envíos a todo el país. El costo de envío es de S/ 15 para Lima y S/ 30 para Provincias. ¡Además, si compras 2 pares o más, el envío es totalmente gratis!</p>
+              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Llegan a mi ciudad?</h3>
+              <p className="text-neutral-600">Si, enviamos a todo el Peru. Costo de envio: S/ 15 Lima, S/ 30 Provincias. Si llevas 2 pares o mas, el envio es completamente gratis. Trabajamos con courier confiable con seguimiento.</p>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-sm">
-              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Cómo puedo comprar?</h3>
-              <p className="text-neutral-600">Puedes agregar los productos que desees a tu carrito de compras y luego proceder al checkout. Allí llenarás tus datos de envío y se generará un mensaje automático de WhatsApp para confirmar tu pedido y coordinar el pago.</p>
+              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Puedo pagar contra entrega?</h3>
+              <p className="text-neutral-600">Si. Ofrecemos pago contra entrega, Yape/Plin y transferencia bancaria. Tu eliges como te resulta mas comodo. No pagas nada hasta que confirmemos tu pedido juntas.</p>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-sm">
-              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Qué pasa si un modelo está agotado?</h3>
-              <p className="text-neutral-600">Muchos de nuestros modelos pueden solicitarse bajo pedido. Puedes reservar tu par con un adelanto de solo S/ 20 y nosotros lo fabricaremos especialmente para ti. El tiempo estimado de entrega es de 10 a 15 días hábiles.</p>
+              <h3 className="text-lg font-medium text-neutral-900 mb-2">¿Que pasa si el modelo que quiero dice "Bajo pedido"?</h3>
+              <p className="text-neutral-600">Puedes reservarlo con un adelanto de S/ 20 y lo fabricamos especialmente para ti en 10 a 15 dias habiles. Es la unica forma de conseguir esos modelos exclusivos que no encontraras en ningun otro lugar.</p>
             </div>
           </div>
         </div>
