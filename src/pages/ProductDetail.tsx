@@ -62,6 +62,30 @@ export default function ProductDetail() {
     .filter(s => s.id !== shoe.id && (s.type === shoe.type || s.tags.some(t => shoe.tags.includes(t))))
     .slice(0, 4);
 
+  const benefitBullets: Record<string, string[]> = {
+    'Estiletos': [
+      'Taco que estiliza la figura y alarga la pierna visualmente.',
+      'Material premium que se moldea al pie desde el primer uso.',
+      'Diseno de edicion limitada — pocas mujeres lo tendran.',
+    ],
+    'Sandalias bajas': [
+      'Comodidad real: puedes usarlas horas sin que los pies protesten.',
+      'Combina con jeans, vestidos o faldas sin pensar dos veces.',
+      'Frescura garantizada para el clima calido peruano.',
+    ],
+    'Sandalias de vestir': [
+      'Presencia inmediata: el tipo de sandalia que genera comentarios.',
+      'Materiales seleccionados que se ven caros porque lo son.',
+      'Unica en su diseno — hecha para mujeres que no siguen tendencias, las marcan.',
+    ],
+  };
+
+  const bullets = benefitBullets[shoe.type] ?? [
+    'Disenado para estilizar tu figura sin sacrificar comodidad.',
+    'Materiales premium que se adaptan a tu pie desde el primer uso.',
+    'El toque de exclusividad que tu outfit necesita.',
+  ];
+
   const nextImage = () => setCurrentImageIndex(prev => (prev + 1) % shoe.images.length);
   const prevImage = () => setCurrentImageIndex(prev => (prev - 1 + shoe.images.length) % shoe.images.length);
 
@@ -172,9 +196,8 @@ export default function ProductDetail() {
                 </span>
               </div>
 
-              {/* H1 with benefit */}
               <h1 className="text-3xl lg:text-4xl font-serif font-light text-neutral-900 mb-2 tracking-tight uppercase text-balance">
-                {shoe.name} — Elegancia que no cansa.
+                {shoe.name}
               </h1>
 
               <div className="flex items-center mb-1">
@@ -184,13 +207,9 @@ export default function ProductDetail() {
               {/* Urgency micro-copy */}
               <p className="text-sm text-[#D4A373] font-medium mb-6">Solo quedan 2 pares en tu talla.</p>
 
-              {/* Bullet point benefits */}
+              {/* Benefit bullets — dynamic per shoe type */}
               <ul className="space-y-2.5 mb-6">
-                {[
-                  'Disenado para estilizar tu figura sin sacrificar comodidad.',
-                  'Materiales premium que se adaptan a tu pie desde el primer uso.',
-                  'El toque de exclusividad que tu outfit necesita.',
-                ].map((point, i) => (
+                {bullets.map((point, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-neutral-700">
                     <Check size={15} className="text-[#D4A373] flex-shrink-0 mt-0.5" strokeWidth={2.5} />
                     {point}

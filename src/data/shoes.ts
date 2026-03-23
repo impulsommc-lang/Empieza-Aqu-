@@ -30,7 +30,7 @@ export const shoes: Shoe[] = [
     heelHeight: '4 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
     soldOutSizes: [37],
-    description: 'Mule de punta fina con doble tira de charol negro y taco bloque bajo. Elegancia discreta para el día a día.',
+    description: 'El look de oficina que se convierte en salida de noche sin cambiar el par. Tira doble de charol negro con taco bloque bajo: porte, comodidad y esa cuota de sofisticacion que te hace notar desde que entras.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-jBFGzBp3VYqIKYqNLCbwa9i2vP79Uw.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.png-Dc1DARZsqVW9boIqgupC0pg5sUoPTA.jpeg',
@@ -52,7 +52,7 @@ export const shoes: Shoe[] = [
     heelHeight: '4 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
     soldOutSizes: [37],
-    description: 'Slingback de punta fina con múltiples tiras cruzadas y hebillas plateadas. Un diseño estructurado que combina modernidad y feminidad.',
+    description: 'Tiras cruzadas y hebillas plateadas que estilizan el empeine y alargan la pierna. Un diseno estructurado que dice "moda" sin decir una sola palabra. Perfecto para la mujer que no quiere pasar desapercibida.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.2.png-XmCdQHzucR2hDZ1xL6BWXzY8kV7Xh0.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203.3.png-gSOOsVeQkNjvTLjjYz0M3g2qVhvQ6Y.jpeg',
@@ -73,7 +73,7 @@ export const shoes: Shoe[] = [
     material: 'Cuero',
     heelHeight: 'Plana',
     sizesAvailable: [35, 36, 37, 38, 39],
-    description: 'Mule plana de punta cuadrada en blanco con tiras cruzadas en negro. Fresca, cómoda y perfecta para cualquier look de verano.',
+    description: 'La sandalia que resuelve cualquier look: jeans, vestido o falda. Punta cuadrada con tiras cruzadas blancas y negras que combinan con todo lo que ya tienes en el closet. Plana, fresca y comoda de verdad.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sandalias%20portada.png-aMIKE3lJv9UmLAIovjsPkY3HCeywHs.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalias%201-ht9pYCrYQNTUcJp42H8xoLbEcOwFw0.jpeg',
@@ -95,7 +95,7 @@ export const shoes: Shoe[] = [
     heelHeight: 'Plana',
     sizesAvailable: [35, 36, 37, 38, 39],
     soldOutSizes: [35],
-    description: 'Mule abierta de denim celeste con tira en V de cuero crema. Fresca y sofisticada, ideal para la temporada cálida.',
+    description: 'El denim que se usa en los pies. Tira en V de cuero crema sobre tela denim celeste: una combinacion que poca gente se atreve a usar y que genera miradas donde vayas. Perfecta para el calor peruano.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sand.modelo2%20portada.png-MabSIIgItDeTYtpVIhIUwgeQtC0UPh.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sanda%20modelo%202%20.2.png-lK5hga42LE0s5hHQJ1jCPsNe13zoWW.jpeg',
@@ -116,7 +116,7 @@ export const shoes: Shoe[] = [
     material: 'Denim',
     heelHeight: '9 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
-    description: 'Sandalia slingback de taco aguja en denim celeste con gran lazo en el empeine. Edición limitada, hecha a mano con materiales seleccionados.',
+    description: 'El par que transforma un vestido sencillo en un atuendo de gala. Taco aguja de 9 cm en denim celeste con lazo de autor en el empeine. Hecha a mano, edicion limitada. Solo para quienes saben que los detalles lo cambian todo.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_3yl1463yl1463yl1.png-uBnWczAR9IAbOUkCWEkUdLgQcMmlTG.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandaliasde%20vestir.png-G4RWxFJZp9xravgugRhjXOdlsUHR0r.jpeg'
@@ -136,7 +136,7 @@ export const shoes: Shoe[] = [
     material: 'Cuero colombiano',
     heelHeight: '7 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
-    description: 'Sandalia de taco bloque plateado con tiras de strass en espiral que envuelven el tobillo. Cuero colombiano, suela noeli grabado antideslizante, forro y plantilla de polibadana.',
+    description: 'El strass que brilla, el cuero colombiano que dura y la suela antideslizante que te da seguridad en cada paso. La sandalia de fiesta que recibe cumplidos antes de que llegues a la pista.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalia%20de%20vestir%202.png-F7Rwm7RUoBzWEIIqTaodTHtX9pj6l7.jpeg'
     ],
@@ -155,7 +155,7 @@ export const shoes: Shoe[] = [
     material: 'Cuero grabado crocco',
     heelHeight: '6 cm',
     sizesAvailable: [35, 36, 37, 38, 39],
-    description: 'Mule de punta cuadrada en cuero grabado negro con taco escultórico de silueta curva. Un diseño sofisticado y atemporal para ocasiones especiales.',
+    description: 'Cuero grabado en negro que nunca pasa de moda. Taco escultórico de silueta curva que eleva y estiliza sin sacrificar la postura. El modelo que funciona para una reunion de trabajo, una cena o cualquier ocasion que merezca verse bien.',
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sandalia%20de%20vestir%201.png-mU6gEc4dHsvP4PeFZfpkxfDHG1wOAW.jpeg'
     ],
