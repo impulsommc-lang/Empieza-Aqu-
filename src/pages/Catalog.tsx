@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Filter, X, ChevronDown } from 'lucide-react';
@@ -8,33 +8,75 @@ import ProductCard from '@/components/ProductCard';
 export default function Catalog() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Derive filter state directly from URL — single source of truth
-  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const selectedType = searchParams.get('tipo') || '';
-  const selectedSize = searchParams.get('talla') ? parseInt(searchParams.get('talla')!) : null;
-  const selectedColor = searchParams.get('color') || '';
-  const sortBy = searchParams.get('orden') || 'recientes';
+  const searchParams = new URLSearchParams(location.search);
+  const initialType = searchParams.get('tipo') || '';
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState<string>(initialType);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('recientes');
 
-  const setParam = (key: string, value: string | null) => {
-    const params = new URLSearchParams(location.search);
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (selectedType) params.set('tipo', selectedType);
+    if (selectedSize) params.set('talla', selectedSize.toString());
+    if (selectedColor) params.set('color', selectedColor);
+    if (sortBy !== 'recientes') params.set('orden', sortBy);
+    
     navigate({ search: params.toString() }, { replace: true });
-  };
+  }, [selectedType, selectedSize, selectedColor, sortBy, navigate]);
 
-  const setSelectedType = (v: string) => setParam('tipo', v || null);
-  const setSelectedSize = (v: number | null) => setParam('talla', v ? v.toString() : null);
-  const setSelectedColor = (v: string) => setParam('color', v || null);
-  const setSortBy = (v: string) => setParam('orden', v === 'recientes' ? null : v);
+  // Sync state with URL on mount or URL change (e.g. back button)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    setSelectedType(params.get('tipo') || '');
+    setSelectedSize(params.get('talla') ? parseInt(params.get('talla')!) : null);
+    setSelectedColor(params.get('color') || '');
+    setSortBy(params.get('orden') || 'recientes');
+  }, [location.search]);
+
+  // Extract unique values for filters
+  const types = Array.from(new Set(shoes.map(s => s.type)));
+  const sizes = Array.from(new Set(shoes.flatMap(s => s.sizesAvailable)) as Set<number>).sort((a, b) => a - b);
+  const colors = Array.from(new Set(shoes.map(s => s.color)));
+
+  // Filter and sort logic
+  const filteredShoes = useMemo(() => {
+    let result = [...shoes];
+
+    if (selectedType) {
+      result = result.filter(s => s.type === selectedType);
+    }
+    if (selectedSize) {
+      result = result.filter(s => s.sizesAvailable.includes(selectedSize));
+    }
+    if (selectedColor) {
+      result = result.filter(s => s.color === selectedColor);
+    }
+
+    switch (sortBy) {
+      case 'precio-menor':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case 'precio-mayor':
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case 'recientes':
+      default:
+        // Assuming the array order is chronological for 'recientes'
+        break;
+    }
+
+    return result;
+  }, [selectedType, selectedSize, selectedColor, sortBy]);
 
   const clearFilters = () => {
-    navigate({ search: '' }, { replace: true });
+    setSelectedType('');
+    setSelectedSize(null);
+    setSelectedColor('');
+    setSortBy('recientes');
   };
 
   const activeFilterCount = [selectedType, selectedSize, selectedColor].filter(Boolean).length;
