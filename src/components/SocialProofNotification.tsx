@@ -28,11 +28,14 @@ export default function SocialProofNotification() {
   const showNext = useCallback(() => {
     setVisible(false);
     setTimeout(() => {
-      setIndex(prev => (prev + 1) % notifications.length);
-      setCurrent(notifications[(index + 1) % notifications.length]);
+      setIndex(prev => {
+        const next = (prev + 1) % notifications.length;
+        setCurrent(notifications[next]);
+        return next;
+      });
       setVisible(true);
     }, 400);
-  }, [index]);
+  }, []);
 
   useEffect(() => {
     // First notification appears after 8 seconds
