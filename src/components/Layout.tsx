@@ -12,7 +12,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const { } = useCart(); // keep context alive
+  useCart(); // keep context alive
 
   const isCheckout = location.pathname === '/checkout';
 
