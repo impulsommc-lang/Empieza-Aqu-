@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Star, Truck, HeartHandshake, ArrowRight, Lock, RotateCcw, BadgeCheck } from 'lucide-react';
+import { ShieldCheck, Star, Truck, HeartHandshake, ArrowRight, Lock, RotateCcw, BadgeCheck } from 'lucide-react';
 import { getWhatsAppLink } from '@/lib/utils';
 import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';

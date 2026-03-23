@@ -120,7 +120,7 @@ export default function CheckoutModal() {
             </div>
 
             {/* Scrollable form body */}
-            <form id="checkout-form" onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
 
               {/* Name */}
               <div className="relative">
@@ -217,7 +217,7 @@ export default function CheckoutModal() {
             <div className="px-6 pb-6 pt-4 border-t border-neutral-100 flex-shrink-0 bg-white">
               <button
                 type="submit"
-                form="checkout-form"
+                onClick={handleSubmit}
                 className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-[#20bd5a] transition-all duration-200 shadow-md"
               >
                 <MessageCircle size={18} />
