@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, AlertCircle, ArrowLeft, Check, ShieldCheck, Truck, PackageOpen, Star, Diamond, Zap } from 'lucide-react';
 import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
+import TestimonialsSlider from '@/components/TestimonialsSlider';
 import { useCart } from '@/context/CartContext';
 
 // Facebook Pixel type shim
@@ -216,6 +217,11 @@ export default function ProductDetail() {
                 <p className="text-[9px] text-[#9B5D40] leading-tight">{card.desc}</p>
               </div>
             ))}
+          </div>
+
+          {/* Testimonials slider — horizontal, touch-friendly */}
+          <div className="mt-6 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-white/80 shadow-sm">
+            <TestimonialsSlider compact />
           </div>
 
           {/* Price pill */}
