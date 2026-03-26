@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, AlertCircle, ArrowLeft, Check, ShieldCheck, Truck, PackageOpen } from 'lucide-react';
+import { ChevronLeft, ChevronRight, AlertCircle, ArrowLeft, Check, ShieldCheck, Truck, PackageOpen, Star, Diamond, Zap } from 'lucide-react';
 import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
@@ -86,6 +86,27 @@ export default function ProductDetail() {
     'El toque de exclusividad que tu outfit necesita.',
   ];
 
+  // 3 benefit cards for the mobile promo strip (inspired by reference image)
+  const benefitCards: Record<string, Array<{ icon: React.ReactNode; title: string; desc: string }>> = {
+    'Estiletos': [
+      { icon: <Star size={22} className="text-[#B5824A]" />, title: 'Estiliza tu figura', desc: 'Taco diseñado para realzar tu pie desde el primer uso' },
+      { icon: <Zap size={22} className="text-[#B5824A]" />, title: 'Ajuste adaptable', desc: 'Material que se amolda suavemente' },
+      { icon: <Diamond size={22} className="text-[#B5824A]" />, title: 'Diseño exclusivo', desc: 'Modelo único que eleva cualquier outfit' },
+    ],
+    'Sandalias bajas': [
+      { icon: <Star size={22} className="text-[#B5824A]" />, title: 'Maxima comodidad', desc: 'Horas de uso sin que los pies protesten' },
+      { icon: <Zap size={22} className="text-[#B5824A]" />, title: 'Versatilidad total', desc: 'Combina con cualquier look sin esfuerzo' },
+      { icon: <Diamond size={22} className="text-[#B5824A]" />, title: 'Hecha para el verano', desc: 'Fresca y resistente para el clima peruano' },
+    ],
+    'Sandalias de vestir': [
+      { icon: <Star size={22} className="text-[#B5824A]" />, title: 'Presencia inmediata', desc: 'El par que genera comentarios al entrar' },
+      { icon: <Zap size={22} className="text-[#B5824A]" />, title: 'Materiales premium', desc: 'Calidad que se nota y se siente al tacto' },
+      { icon: <Diamond size={22} className="text-[#B5824A]" />, title: 'Edicion limitada', desc: 'Unica en su diseño, hecha para destacar' },
+    ],
+  };
+
+  const cards = benefitCards[shoe.type] ?? benefitCards['Estiletos'];
+
   const nextImage = () => setCurrentImageIndex(prev => (prev + 1) % shoe.images.length);
   const prevImage = () => setCurrentImageIndex(prev => (prev - 1 + shoe.images.length) % shoe.images.length);
 
@@ -111,252 +132,360 @@ export default function ProductDetail() {
 
   return (
     <>
-      <div className="bg-white min-h-screen py-8 md:py-12 pb-28 lg:pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white min-h-screen pb-28 lg:pb-12">
 
-          {/* Breadcrumb & Back */}
-          <div className="mb-8 flex items-center text-sm text-neutral-500">
-            <button onClick={() => navigate(-1)} className="flex items-center hover:text-neutral-900 transition-colors mr-4">
-              <ArrowLeft size={16} className="mr-1" /> Volver
-            </button>
-            <span className="mx-2">/</span>
-            <Link to="/zapatos" className="hover:text-neutral-900 transition-colors">Coleccion</Link>
-            <span className="mx-2">/</span>
-            <span className="text-neutral-900 font-medium truncate">{shoe.name}</span>
+        {/* ── MOBILE HERO STRIP ─────────────────────────────────────── */}
+        <div className="lg:hidden w-full bg-gradient-to-b from-[#f9ede4] via-[#f5e4d7] to-[#f0d8c8] pt-4 pb-8 px-4 text-center relative overflow-hidden">
+          {/* sparkle decorations */}
+          <span className="absolute top-6 left-8 text-[#D4A373] opacity-60 text-xl select-none">✦</span>
+          <span className="absolute top-10 right-10 text-[#D4A373] opacity-40 text-base select-none">✦</span>
+          <span className="absolute bottom-12 left-6 text-[#D4A373] opacity-30 text-sm select-none">✦</span>
+
+          {/* Badge row */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+              <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+              Alta demanda
+            </span>
+            {shoe.badge && (
+              <span className="bg-[#D4A373] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                {shoe.badge}
+              </span>
+            )}
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-12 mb-24">
+          {/* Title */}
+          <h1 className="text-2xl font-serif font-bold text-[#7C3A2A] leading-tight tracking-tight text-balance mb-1 uppercase">
+            {shoe.name}
+          </h1>
+          <p className="text-sm text-[#9B5D40] font-light mb-1">
+            {shoe.type === 'Estiletos' ? 'Estiliza tu figura y luce elegante sin esfuerzo' :
+              shoe.type === 'Sandalias bajas' ? 'Comodidad y estilo para cada momento del dia' :
+              'Presencia y sofisticacion en cada paso'}
+          </p>
+          <p className="text-xs text-[#B5824A] mb-4">Comodidad que realza tu estilo desde el primer paso</p>
 
-            {/* Image Gallery */}
-            <div className="lg:w-3/5 relative">
-              <div className="sticky top-24">
-                <div
-                  className="relative aspect-[4/5] overflow-hidden bg-neutral-50 cursor-zoom-in"
-                  onClick={() => setIsZoomed(!isZoomed)}
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={currentImageIndex}
-                      src={shoe.images[currentImageIndex]}
-                      alt={`${shoe.name} - Vista ${currentImageIndex + 1}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1, scale: isZoomed ? 1.5 : 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`w-full h-full object-cover transition-transform duration-500 ${isZoomed ? 'cursor-zoom-out' : 'hover:scale-105'}`}
-                      referrerPolicy="no-referrer"
-                    />
-                  </AnimatePresence>
+          {/* Image with trust badge overlay */}
+          <div className="relative mx-auto w-full max-w-xs">
+            <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentImageIndex}
+                  src={shoe.images[currentImageIndex]}
+                  alt={`${shoe.name} - Vista ${currentImageIndex + 1}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </AnimatePresence>
+              {shoe.images.length > 1 && (
+                <>
+                  <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Imagen anterior">
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Siguiente imagen">
+                    <ChevronRight size={16} />
+                  </button>
+                </>
+              )}
+            </div>
+            {/* Exclusive badge — top-right overlay */}
+            <div className="absolute -top-3 -right-3 bg-[#f9ede4] border border-[#D4A373] rounded-xl px-3 py-2 shadow-md text-center">
+              <p className="text-[10px] font-bold text-[#7C3A2A] uppercase leading-tight">Diseño</p>
+              <p className="text-[10px] font-bold text-[#7C3A2A] uppercase leading-tight">exclusivo</p>
+              <p className="text-[9px] text-[#B5824A] mt-0.5 leading-tight">Edición limitada<br />disponible</p>
+            </div>
+          </div>
 
-                  {shoe.images.length > 1 && (
-                    <>
-                      <button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-neutral-900 shadow-sm hover:bg-white transition-colors z-10" aria-label="Imagen anterior">
-                        <ChevronLeft size={20} />
-                      </button>
-                      <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-neutral-900 shadow-sm hover:bg-white transition-colors z-10" aria-label="Siguiente imagen">
-                        <ChevronRight size={20} />
-                      </button>
-                    </>
-                  )}
+          {/* Benefit sub-heading */}
+          <p className="mt-6 text-xs font-bold uppercase tracking-widest text-[#7C3A2A] text-center px-2">
+            Disfruta de elegancia, comodidad y estilo en un solo par de zapatos
+          </p>
 
-                  <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
-                    {shoe.badge && (
-                      <span className="bg-[#D4A373] text-white text-xs font-medium px-3 py-1.5 uppercase tracking-widest shadow-sm">{shoe.badge}</span>
-                    )}
-                    {!shoe.isAvailable && (
-                      <span className="bg-neutral-900 text-white text-xs font-medium px-3 py-1.5 uppercase tracking-widest shadow-sm">Bajo Pedido</span>
-                    )}
-                  </div>
+          {/* 3 benefit cards */}
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {cards.map((card, i) => (
+              <div key={i} className="bg-white/70 backdrop-blur-sm rounded-xl p-2.5 flex flex-col items-center text-center shadow-sm border border-white/80">
+                <div className="w-9 h-9 rounded-full bg-[#f9ede4] flex items-center justify-center mb-1.5">
+                  {card.icon}
                 </div>
-
-                {shoe.images.length > 1 && (
-                  <div className="flex gap-4 mt-4 overflow-x-auto hide-scrollbar">
-                    {shoe.images.map((img, idx) => (
-                      <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`relative w-20 h-24 flex-shrink-0 bg-neutral-50 overflow-hidden transition-all duration-200 ${currentImageIndex === idx ? 'ring-1 ring-neutral-900 opacity-100' : 'opacity-60 hover:opacity-100'}`}>
-                        <img src={img} alt={`Miniatura ${idx + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <p className="text-[10px] font-bold text-[#7C3A2A] leading-tight mb-0.5 italic">{card.title}</p>
+                <p className="text-[9px] text-[#9B5D40] leading-tight">{card.desc}</p>
               </div>
+            ))}
+          </div>
+
+          {/* Price pill */}
+          <div className="mt-5 mx-auto max-w-xs">
+            <div className="bg-[#7C3A2A] rounded-full py-3 px-6 flex items-center justify-center gap-3 shadow-lg">
+              <div className="text-left">
+                <p className="text-white/70 text-[9px] uppercase tracking-widest leading-none">Camina con seguridad desde el primer paso</p>
+                <p className="text-white font-bold text-2xl leading-none mt-0.5">S/ {shoe.price.toFixed(2)}</p>
+              </div>
+              <span className="text-[#f4c98a] font-bold text-sm uppercase tracking-wider border border-[#f4c98a]/40 rounded-lg px-2 py-1">
+                Solo hoy
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── MAIN CONTENT (shared desktop + mobile remainder) ─────── */}
+        <div className="py-6 md:py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {/* Breadcrumb & Back */}
+            <div className="mb-6 flex items-center text-sm text-neutral-500">
+              <button onClick={() => navigate(-1)} className="flex items-center hover:text-neutral-900 transition-colors mr-4">
+                <ArrowLeft size={16} className="mr-1" /> Volver
+              </button>
+              <span className="mx-2">/</span>
+              <Link to="/zapatos" className="hover:text-neutral-900 transition-colors">Coleccion</Link>
+              <span className="mx-2">/</span>
+              <span className="text-neutral-900 font-medium truncate">{shoe.name}</span>
             </div>
 
-            {/* Product Info */}
-            <div className="lg:w-2/5 flex flex-col">
-              <div className="mb-2 flex justify-between items-start">
-                <p className="text-xs text-neutral-500 uppercase tracking-widest font-medium">{shoe.type}</p>
-                <p className="text-xs text-neutral-400 font-mono">SKU: {shoe.sku}</p>
-              </div>
+            <div className="flex flex-col lg:flex-row gap-12 mb-24">
 
-              {/* Scarcity badge */}
-              <div className="mb-3">
-                <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
-                  Alta demanda — Edicion Limitada
-                </span>
-              </div>
+              {/* Image Gallery — DESKTOP only (hidden on mobile, shown in hero strip above) */}
+              <div className="hidden lg:block lg:w-3/5 relative">
+                <div className="sticky top-24">
+                  <div
+                    className="relative aspect-[4/5] overflow-hidden bg-neutral-50 cursor-zoom-in"
+                    onClick={() => setIsZoomed(!isZoomed)}
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={currentImageIndex}
+                        src={shoe.images[currentImageIndex]}
+                        alt={`${shoe.name} - Vista ${currentImageIndex + 1}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, scale: isZoomed ? 1.5 : 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className={`w-full h-full object-cover transition-transform duration-500 ${isZoomed ? 'cursor-zoom-out' : 'hover:scale-105'}`}
+                        referrerPolicy="no-referrer"
+                      />
+                    </AnimatePresence>
 
-              <h1 className="text-3xl lg:text-4xl font-serif font-light text-neutral-900 mb-2 tracking-tight uppercase text-balance">
-                {shoe.name}
-              </h1>
+                    {shoe.images.length > 1 && (
+                      <>
+                        <button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-neutral-900 shadow-sm hover:bg-white transition-colors z-10" aria-label="Imagen anterior">
+                          <ChevronLeft size={20} />
+                        </button>
+                        <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-neutral-900 shadow-sm hover:bg-white transition-colors z-10" aria-label="Siguiente imagen">
+                          <ChevronRight size={20} />
+                        </button>
+                      </>
+                    )}
 
-              <div className="flex items-center mb-1">
-                <span className="text-2xl font-medium text-neutral-900">S/ {shoe.price.toFixed(2)}</span>
-              </div>
-
-              {/* Urgency micro-copy */}
-              <p className="text-sm text-[#D4A373] font-medium mb-6">Solo quedan 2 pares en tu talla.</p>
-
-              {/* Benefit bullets — dynamic per shoe type */}
-              <ul className="space-y-2.5 mb-6">
-                {bullets.map((point, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-neutral-700">
-                    <Check size={15} className="text-[#D4A373] flex-shrink-0 mt-0.5" strokeWidth={2.5} />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Grand Slam Offer box */}
-              <div className="bg-[#FAFAF7] border border-[#D4A373]/30 rounded-xl p-5 mb-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-[#D4A373] mb-2">Oferta de Hoy</p>
-                <p className="text-sm text-neutral-700 leading-relaxed mb-3">
-                  Asegura tu par ahora y llevate <strong className="text-neutral-900">envio GRATIS a todo el Peru</strong> por la compra de 2 pares.
-                </p>
-                <div className="flex items-start gap-2">
-                  <ShieldCheck size={15} className="text-neutral-500 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-                  <p className="text-xs text-neutral-600">
-                    <strong className="text-neutral-800">Garantia AMIRAH:</strong> Si la talla no te queda perfecta, el primer cambio es 100% GRATIS. Cero riesgos para ti.
-                  </p>
-                </div>
-              </div>
-
-              {/* Made to Order */}
-              {!shoe.isAvailable && (
-                <div className="mb-8 p-5 bg-[#F5F5F0] border border-neutral-200 rounded-xl">
-                  <div className="flex items-start mb-3">
-                    <AlertCircle size={18} className="text-neutral-900 mr-2 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <strong className="text-neutral-900 block text-sm uppercase tracking-wider mb-1">Agotado — Disponible bajo pedido</strong>
-                      <p className="text-sm text-neutral-600 font-light">Reserva tu par y lo preparamos especialmente para ti.</p>
+                    <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
+                      {shoe.badge && (
+                        <span className="bg-[#D4A373] text-white text-xs font-medium px-3 py-1.5 uppercase tracking-widest shadow-sm">{shoe.badge}</span>
+                      )}
+                      {!shoe.isAvailable && (
+                        <span className="bg-neutral-900 text-white text-xs font-medium px-3 py-1.5 uppercase tracking-widest shadow-sm">Bajo Pedido</span>
+                      )}
                     </div>
                   </div>
-                </div>
-              )}
 
-              {/* Size selector */}
-              <div className="mb-8" id="size-section">
-                <div className="flex justify-between items-end mb-3">
-                  <div>
-                    <p className="text-xs text-neutral-500 uppercase tracking-widest mb-1">Cual es tu talla ideal?</p>
-                    <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-900">Talla</h3>
+                  {shoe.images.length > 1 && (
+                    <div className="flex gap-4 mt-4 overflow-x-auto hide-scrollbar">
+                      {shoe.images.map((img, idx) => (
+                        <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`relative w-20 h-24 flex-shrink-0 bg-neutral-50 overflow-hidden transition-all duration-200 ${currentImageIndex === idx ? 'ring-1 ring-neutral-900 opacity-100' : 'opacity-60 hover:opacity-100'}`}>
+                          <img src={img} alt={`Miniatura ${idx + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="lg:w-2/5 flex flex-col">
+                {/* Desktop-only header (hidden on mobile where hero strip handles it) */}
+                <div className="hidden lg:block mb-2">
+                  <div className="flex justify-between items-start mb-2">
+                    <p className="text-xs text-neutral-500 uppercase tracking-widest font-medium">{shoe.type}</p>
+                    <p className="text-xs text-neutral-400 font-mono">SKU: {shoe.sku}</p>
                   </div>
-                  <button className="text-xs text-neutral-500 underline hover:text-neutral-900 transition-colors">Guia de tallas</button>
+                  <div className="mb-3">
+                    <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest">
+                      <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+                      Alta demanda — Edicion Limitada
+                    </span>
+                  </div>
+                  <h1 className="text-3xl lg:text-4xl font-serif font-light text-neutral-900 mb-2 tracking-tight uppercase text-balance">
+                    {shoe.name}
+                  </h1>
+                  <div className="flex items-center mb-1">
+                    <span className="text-2xl font-medium text-neutral-900">S/ {shoe.price.toFixed(2)}</span>
+                  </div>
+                  <p className="text-sm text-[#D4A373] font-medium mb-6">Solo quedan 2 pares en tu talla.</p>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {shoe.sizesAvailable.map((size) => {
-                    const isSoldOut = shoe.soldOutSizes?.includes(size);
-                    const isSelected = selectedSize === size;
-                    return (
-                      <button
-                        key={size}
-                        onClick={() => { if (!isSoldOut) { setSelectedSize(size); setSizeError(false); } }}
-                        disabled={isSoldOut}
-                        aria-label={isSoldOut ? `Talla ${size} agotada` : `Talla ${size}`}
-                        className={`relative w-12 h-12 flex items-center justify-center rounded-full border text-sm transition-all duration-200 ${
-                          isSoldOut
-                            ? 'border-neutral-200 text-neutral-300 bg-neutral-50 cursor-not-allowed'
-                            : isSelected
-                            ? 'border-neutral-900 bg-neutral-900 text-white'
-                            : 'border-neutral-300 text-neutral-900 bg-white hover:border-neutral-900'
-                        }`}
-                      >
-                        {size}
-                        {isSoldOut && (
-                          <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <span className="block w-8 h-px bg-neutral-300 rotate-45 absolute" />
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                {sizeError && (
-                  <p className="text-xs text-red-500 mt-2">Por favor selecciona una talla antes de continuar.</p>
-                )}
-              </div>
 
-              {/* Quantity */}
-              <div className="mb-8">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-900 mb-4">Cantidad</h3>
-                <div className="inline-flex items-center border border-neutral-300 rounded-full">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors">-</button>
-                  <span className="w-8 text-center text-sm font-medium text-neutral-900">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors">+</button>
+                {/* Mobile: price + scarcity row */}
+                <div className="lg:hidden flex items-center justify-between mb-4 mt-2">
+                  <div>
+                    <span className="text-2xl font-bold text-neutral-900">S/ {shoe.price.toFixed(2)}</span>
+                    <p className="text-xs text-[#D4A373] font-medium mt-0.5">Solo quedan 2 pares en tu talla.</p>
+                  </div>
+                  <p className="text-xs text-neutral-400 font-mono">SKU: {shoe.sku}</p>
                 </div>
-              </div>
 
-              {/* Desktop CTA — pulses when a size is selected */}
-              <div className="hidden lg:flex flex-col gap-4 mb-8">
-                <button
-                  onClick={handleBuyNow}
-                  className={`w-full flex items-center justify-center bg-neutral-900 text-white py-4 px-8 text-sm font-semibold uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 rounded-xl ${selectedSize ? 'animate-pulse-once' : ''}`}
-                >
-                  Comprar Ahora &bull; S/ {(shoe.price * quantity).toFixed(2)}
-                </button>
-              </div>
-
-              {/* Trust Signals */}
-              <div className="grid grid-cols-1 gap-3 py-6 border-t border-neutral-100 mb-8">
-                <div className="flex items-center gap-3 text-sm text-neutral-600">
-                  <Truck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
-                  <span>Envio a todo el pais.</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-600">
-                  <ShieldCheck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
-                  <span>Pago 100% seguro al coordinar.</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-600">
-                  <PackageOpen size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
-                  <span>Primer cambio de talla GRATIS.</span>
-                </div>
-              </div>
-
-              {/* Product details */}
-              <div className="border-t border-neutral-100 pt-6 mt-2">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-900 mb-4">Detalles del Producto</h3>
-                <ul className="space-y-2 text-sm text-neutral-600 font-light">
-                  <li><span className="font-medium text-neutral-900">Color:</span> {shoe.color}</li>
-                  <li><span className="font-medium text-neutral-900">Material:</span> {shoe.material}</li>
-                  <li><span className="font-medium text-neutral-900">Altura del tacon:</span> {shoe.heelHeight}</li>
+                {/* Benefit bullets */}
+                <ul className="space-y-2.5 mb-6">
+                  {bullets.map((point, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-neutral-700">
+                      <Check size={15} className="text-[#D4A373] flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                      {point}
+                    </li>
+                  ))}
                 </ul>
-              </div>
-            </div>
-          </div>
 
-          {/* Related Products */}
-          {relatedShoes.length > 0 && (
-            <div className="mt-32 border-t border-neutral-100 pt-16">
-              <div className="text-center mb-12">
-                <h2 className="text-2xl font-serif font-light text-neutral-900 mb-4 uppercase tracking-widest">Tambien podria gustarte</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedShoes.map((relatedShoe, index) => (
-                  <motion.div key={relatedShoe.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: index * 0.1 }}>
-                    <ProductCard shoe={relatedShoe} />
-                  </motion.div>
-                ))}
+                {/* Grand Slam Offer box */}
+                <div className="bg-[#FAFAF7] border border-[#D4A373]/30 rounded-xl p-5 mb-8">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#D4A373] mb-2">Oferta de Hoy</p>
+                  <p className="text-sm text-neutral-700 leading-relaxed mb-3">
+                    Asegura tu par ahora y llevate <strong className="text-neutral-900">envio GRATIS a todo el Peru</strong> por la compra de 2 pares.
+                  </p>
+                  <div className="flex items-start gap-2">
+                    <ShieldCheck size={15} className="text-neutral-500 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                    <p className="text-xs text-neutral-600">
+                      <strong className="text-neutral-800">Garantia AMIRAH:</strong> Si la talla no te queda perfecta, el primer cambio es 100% GRATIS. Cero riesgos para ti.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Made to Order */}
+                {!shoe.isAvailable && (
+                  <div className="mb-8 p-5 bg-[#F5F5F0] border border-neutral-200 rounded-xl">
+                    <div className="flex items-start mb-3">
+                      <AlertCircle size={18} className="text-neutral-900 mr-2 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong className="text-neutral-900 block text-sm uppercase tracking-wider mb-1">Agotado — Disponible bajo pedido</strong>
+                        <p className="text-sm text-neutral-600 font-light">Reserva tu par y lo preparamos especialmente para ti.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Size selector */}
+                <div className="mb-8" id="size-section">
+                  <div className="flex justify-between items-end mb-3">
+                    <div>
+                      <p className="text-xs text-neutral-500 uppercase tracking-widest mb-1">Cual es tu talla ideal?</p>
+                      <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-900">Talla</h3>
+                    </div>
+                    <button className="text-xs text-neutral-500 underline hover:text-neutral-900 transition-colors">Guia de tallas</button>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {shoe.sizesAvailable.map((size) => {
+                      const isSoldOut = shoe.soldOutSizes?.includes(size);
+                      const isSelected = selectedSize === size;
+                      return (
+                        <button
+                          key={size}
+                          onClick={() => { if (!isSoldOut) { setSelectedSize(size); setSizeError(false); } }}
+                          disabled={isSoldOut}
+                          aria-label={isSoldOut ? `Talla ${size} agotada` : `Talla ${size}`}
+                          className={`relative w-12 h-12 flex items-center justify-center rounded-full border text-sm transition-all duration-200 ${
+                            isSoldOut
+                              ? 'border-neutral-200 text-neutral-300 bg-neutral-50 cursor-not-allowed'
+                              : isSelected
+                              ? 'border-neutral-900 bg-neutral-900 text-white'
+                              : 'border-neutral-300 text-neutral-900 bg-white hover:border-neutral-900'
+                          }`}
+                        >
+                          {size}
+                          {isSoldOut && (
+                            <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                              <span className="block w-8 h-px bg-neutral-300 rotate-45 absolute" />
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {sizeError && (
+                    <p className="text-xs text-red-500 mt-2">Por favor selecciona una talla antes de continuar.</p>
+                  )}
+                </div>
+
+                {/* Quantity */}
+                <div className="mb-8">
+                  <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-900 mb-4">Cantidad</h3>
+                  <div className="inline-flex items-center border border-neutral-300 rounded-full">
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors">-</button>
+                    <span className="w-8 text-center text-sm font-medium text-neutral-900">{quantity}</span>
+                    <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors">+</button>
+                  </div>
+                </div>
+
+                {/* Desktop CTA */}
+                <div className="hidden lg:flex flex-col gap-4 mb-8">
+                  <button
+                    onClick={handleBuyNow}
+                    className={`w-full flex items-center justify-center bg-neutral-900 text-white py-4 px-8 text-sm font-semibold uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 rounded-xl ${selectedSize ? 'animate-pulse-once' : ''}`}
+                  >
+                    Comprar Ahora &bull; S/ {(shoe.price * quantity).toFixed(2)}
+                  </button>
+                </div>
+
+                {/* Trust Signals */}
+                <div className="grid grid-cols-1 gap-3 py-6 border-t border-neutral-100 mb-8">
+                  <div className="flex items-center gap-3 text-sm text-neutral-600">
+                    <Truck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
+                    <span>Envio a todo el pais.</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-neutral-600">
+                    <ShieldCheck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
+                    <span>Pago 100% seguro al coordinar.</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-neutral-600">
+                    <PackageOpen size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
+                    <span>Primer cambio de talla GRATIS.</span>
+                  </div>
+                </div>
+
+                {/* Product details */}
+                <div className="border-t border-neutral-100 pt-6 mt-2">
+                  <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-900 mb-4">Detalles del Producto</h3>
+                  <ul className="space-y-2 text-sm text-neutral-600 font-light">
+                    <li><span className="font-medium text-neutral-900">Color:</span> {shoe.color}</li>
+                    <li><span className="font-medium text-neutral-900">Material:</span> {shoe.material}</li>
+                    <li><span className="font-medium text-neutral-900">Altura del tacon:</span> {shoe.heelHeight}</li>
+                  </ul>
+                </div>
               </div>
             </div>
-          )}
+
+            {/* Related Products */}
+            {relatedShoes.length > 0 && (
+              <div className="mt-16 md:mt-32 border-t border-neutral-100 pt-16">
+                <div className="text-center mb-12">
+                  <h2 className="text-2xl font-serif font-light text-neutral-900 mb-4 uppercase tracking-widest">Tambien podria gustarte</h2>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                  {relatedShoes.map((relatedShoe, index) => (
+                    <motion.div key={relatedShoe.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: index * 0.1 }}>
+                      <ProductCard shoe={relatedShoe} />
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Sticky CTA — mobile only, pulses when size selected */}
+      {/* Sticky CTA — mobile only */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-neutral-100 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
         <button
           onClick={handleBuyNow}
-          className={`w-full flex items-center justify-center bg-neutral-900 text-white py-4 rounded-xl text-sm font-semibold uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 ${selectedSize ? 'animate-[pulse_1.5s_ease-in-out_3]' : ''}`}
+          className={`w-full flex items-center justify-center bg-[#7C3A2A] text-white py-4 rounded-xl text-sm font-semibold uppercase tracking-widest hover:bg-[#6a3122] transition-all duration-300 ${selectedSize ? 'animate-[pulse_1.5s_ease-in-out_3]' : ''}`}
         >
           Comprar Ahora &bull; S/ {(shoe.price * quantity).toFixed(2)}
         </button>

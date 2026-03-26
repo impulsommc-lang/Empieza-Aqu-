@@ -1,9 +1,124 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Filter, X, ChevronDown } from 'lucide-react';
-import { shoes, Shoe } from '@/data/shoes';
+import { Filter, X, ChevronDown, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
+
+const testimonials = [
+  { id: 1, name: 'Valeria M.', text: 'Me siento mucho más elegante y segura al caminar. ¡Recibo cumplidos todo el tiempo!', rating: 5 },
+  { id: 2, name: 'Carolina S.', text: 'Complementan mis outfits de oficina perfectamente. La calidad es increíble.', rating: 5 },
+  { id: 3, name: 'Andrea P.', text: 'Nunca pensé que unos tacones pudieran ser tan cómodos y a la vez tan sofisticados.', rating: 5 },
+  { id: 4, name: 'Lucía G.', text: 'El diseño es hermoso, elevan cualquier look básico al instante.', rating: 5 },
+  { id: 5, name: 'Mariana R.', text: 'Se nota la exclusividad en cada detalle. Definitivamente mi nueva marca favorita.', rating: 5 },
+  { id: 6, name: 'Sofía T.', text: 'Los recibí en 3 días y el empaque es precioso. Calidad de lujo a precio justo.', rating: 5 },
+];
+
+function TestimonialsSlider() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    isDragging.current = true;
+    startX.current = e.pageX - (sliderRef.current?.offsetLeft ?? 0);
+    scrollLeft.current = sliderRef.current?.scrollLeft ?? 0;
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !sliderRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    sliderRef.current.scrollLeft = scrollLeft.current - (x - startX.current);
+  };
+  const onMouseUp = () => { isDragging.current = false; };
+
+  const scrollTo = (idx: number) => {
+    const clamped = Math.max(0, Math.min(idx, testimonials.length - 1));
+    setActiveIndex(clamped);
+    const card = sliderRef.current?.children[clamped] as HTMLElement | undefined;
+    card?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  };
+
+  return (
+    <div className="w-full">
+      {/* Header */}
+      <div className="flex items-end justify-between mb-5 px-1">
+        <div>
+          <h3 className="text-lg font-serif font-bold text-neutral-900 text-balance">Lo que dicen nuestras clientas</h3>
+          <p className="text-xs text-neutral-500 mt-1">+500 mujeres satisfechas en todo el Peru</p>
+        </div>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => scrollTo(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            aria-label="Anterior testimonio"
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-600 disabled:opacity-30 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+          >
+            <ChevronLeft size={15} />
+          </button>
+          <button
+            onClick={() => scrollTo(activeIndex + 1)}
+            disabled={activeIndex === testimonials.length - 1}
+            aria-label="Siguiente testimonio"
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-600 disabled:opacity-30 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+          >
+            <ChevronRight size={15} />
+          </button>
+        </div>
+      </div>
+
+      {/* Slider */}
+      <div
+        ref={sliderRef}
+        className="flex gap-4 overflow-x-auto hide-scrollbar cursor-grab active:cursor-grabbing select-none pb-2"
+        style={{ scrollSnapType: 'x mandatory' }}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+      >
+        {testimonials.map((t, i) => (
+          <div
+            key={t.id}
+            onClick={() => setActiveIndex(i)}
+            style={{ scrollSnapAlign: 'start' }}
+            className="flex-shrink-0 w-64 sm:w-72 bg-white rounded-2xl p-5 border border-neutral-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex gap-0.5 mb-3">
+              {Array.from({ length: t.rating }).map((_, j) => (
+                <Star key={j} size={13} className="fill-[#D4A373] text-[#D4A373]" />
+              ))}
+            </div>
+            <p className="text-sm text-neutral-700 italic leading-relaxed mb-4">"{t.text}"</p>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-[#f5ede4] flex items-center justify-center text-[#B5824A] font-serif font-bold text-sm flex-shrink-0">
+                {t.name.charAt(0)}
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-neutral-900">{t.name}</p>
+                <p className="text-[10px] text-neutral-400">Clienta Verificada</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-1.5 mt-4">
+        {testimonials.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollTo(i)}
+            aria-label={`Testimonio ${i + 1}`}
+            className={`rounded-full transition-all duration-300 ${i === activeIndex ? 'w-5 h-1.5 bg-[#D4A373]' : 'w-1.5 h-1.5 bg-neutral-300'}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Catalog() {
   const location = useLocation();
@@ -24,7 +139,6 @@ export default function Catalog() {
     if (selectedSize) params.set('talla', selectedSize.toString());
     if (selectedColor) params.set('color', selectedColor);
     if (sortBy !== 'recientes') params.set('orden', sortBy);
-    
     navigate({ search: params.toString() }, { replace: true });
   }, [selectedType, selectedSize, selectedColor, sortBy, navigate]);
 
@@ -45,30 +159,14 @@ export default function Catalog() {
   // Filter and sort logic
   const filteredShoes = useMemo(() => {
     let result = [...shoes];
-
-    if (selectedType) {
-      result = result.filter(s => s.type === selectedType);
-    }
-    if (selectedSize) {
-      result = result.filter(s => s.sizesAvailable.includes(selectedSize));
-    }
-    if (selectedColor) {
-      result = result.filter(s => s.color === selectedColor);
-    }
-
+    if (selectedType) result = result.filter(s => s.type === selectedType);
+    if (selectedSize) result = result.filter(s => s.sizesAvailable.includes(selectedSize));
+    if (selectedColor) result = result.filter(s => s.color === selectedColor);
     switch (sortBy) {
-      case 'precio-menor':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'precio-mayor':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'recientes':
-      default:
-        // Assuming the array order is chronological for 'recientes'
-        break;
+      case 'precio-menor': result.sort((a, b) => a.price - b.price); break;
+      case 'precio-mayor': result.sort((a, b) => b.price - a.price); break;
+      default: break;
     }
-
     return result;
   }, [selectedType, selectedSize, selectedColor, sortBy]);
 
@@ -85,14 +183,19 @@ export default function Catalog() {
     <div className="bg-[#F5F5F0] min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-neutral-900 mb-4">
-            Nuestra Colección
+            Nuestra Coleccion
           </h1>
           <div className="w-16 h-0.5 bg-[#D4A373] mx-auto mb-6" />
           <p className="text-neutral-500 max-w-2xl mx-auto">
-            Explora nuestra selección completa de zapatos diseñados para destacar tu estilo.
+            Explora nuestra seleccion completa de zapatos disenados para destacar tu estilo.
           </p>
+        </div>
+
+        {/* ── TESTIMONIALS SLIDER (strategic placement below header) ── */}
+        <div className="mb-10 bg-[#FAFAF7] rounded-2xl p-5 md:p-6 border border-neutral-100 shadow-sm">
+          <TestimonialsSlider />
         </div>
 
         {/* Mobile Filter Toggle & Sort */}
@@ -113,7 +216,7 @@ export default function Catalog() {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="w-full appearance-none bg-white border border-neutral-200 text-neutral-900 text-sm rounded-full px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-neutral-900"
               >
-                <option value="recientes">Más recientes</option>
+                <option value="recientes">Mas recientes</option>
                 <option value="precio-menor">Precio: Menor a Mayor</option>
                 <option value="precio-mayor">Precio: Mayor a Menor</option>
               </select>
@@ -124,27 +227,18 @@ export default function Catalog() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <div className={`
-            lg:w-1/4 flex-shrink-0 
-            ${isFilterOpen ? 'block' : 'hidden lg:block'}
-          `}>
+          <div className={`lg:w-1/4 flex-shrink-0 ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white p-6 rounded-2xl shadow-sm sticky top-28">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-lg font-medium text-neutral-900 flex items-center">
                   <Filter size={18} className="mr-2" /> Filtros
                 </h2>
                 {activeFilterCount > 0 && (
-                  <button
-                    onClick={clearFilters}
-                    className="text-xs text-neutral-500 hover:text-neutral-900 underline"
-                  >
+                  <button onClick={clearFilters} className="text-xs text-neutral-500 hover:text-neutral-900 underline">
                     Limpiar
                   </button>
                 )}
-                <button
-                  onClick={() => setIsFilterOpen(false)}
-                  className="lg:hidden text-neutral-500 hover:text-neutral-900"
-                >
+                <button onClick={() => setIsFilterOpen(false)} className="lg:hidden text-neutral-500 hover:text-neutral-900">
                   <X size={20} />
                 </button>
               </div>
@@ -162,9 +256,7 @@ export default function Catalog() {
                           checked={selectedType === type}
                           onChange={() => setSelectedType(selectedType === type ? '' : type)}
                         />
-                        {selectedType === type && (
-                          <div className="w-3 h-3 bg-neutral-900 rounded-sm" />
-                        )}
+                        {selectedType === type && <div className="w-3 h-3 bg-neutral-900 rounded-sm" />}
                       </div>
                       <span className={`text-sm ${selectedType === type ? 'text-neutral-900 font-medium' : 'text-neutral-600 group-hover:text-neutral-900'}`}>
                         {type}
@@ -182,13 +274,11 @@ export default function Catalog() {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(selectedSize === size ? null : size)}
-                      className={`
-                        w-10 h-10 rounded-full text-sm font-medium transition-all duration-200
-                        ${selectedSize === size 
-                          ? 'bg-neutral-900 text-white shadow-md' 
+                      className={`w-10 h-10 rounded-full text-sm font-medium transition-all duration-200 ${
+                        selectedSize === size
+                          ? 'bg-neutral-900 text-white shadow-md'
                           : 'bg-neutral-50 text-neutral-600 border border-neutral-200 hover:border-neutral-900 hover:text-neutral-900'
-                        }
-                      `}
+                      }`}
                     >
                       {size}
                     </button>
@@ -204,13 +294,11 @@ export default function Catalog() {
                     <button
                       key={color}
                       onClick={() => setSelectedColor(selectedColor === color ? '' : color)}
-                      className={`
-                        px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
-                        ${selectedColor === color 
-                          ? 'bg-neutral-900 text-white shadow-md' 
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        selectedColor === color
+                          ? 'bg-neutral-900 text-white shadow-md'
                           : 'bg-neutral-50 text-neutral-600 border border-neutral-200 hover:border-neutral-900 hover:text-neutral-900'
-                        }
-                      `}
+                      }`}
                     >
                       {color}
                     </button>
@@ -227,7 +315,7 @@ export default function Catalog() {
             </div>
 
             {filteredShoes.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                 {filteredShoes.map((shoe, index) => (
                   <motion.div
                     key={shoe.id}
@@ -246,7 +334,7 @@ export default function Catalog() {
                 </div>
                 <h3 className="text-xl font-medium text-neutral-900 mb-2">No se encontraron productos</h3>
                 <p className="text-neutral-500 mb-6">
-                  Intenta ajustar o eliminar algunos filtros para ver más resultados.
+                  Intenta ajustar o eliminar algunos filtros para ver mas resultados.
                 </p>
                 <button
                   onClick={clearFilters}
