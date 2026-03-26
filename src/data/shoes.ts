@@ -34,7 +34,11 @@ export const shoes: Shoe[] = [
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-jBFGzBp3VYqIKYqNLCbwa9i2vP79Uw.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.png-Dc1DARZsqVW9boIqgupC0pg5sUoPTA.jpeg',
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto2%20portada.png-rqIUGtMz7I5hnEzeqC1fgHsyfldOWP.jpeg'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto2%20portada.png-rqIUGtMz7I5hnEzeqC1fgHsyfldOWP.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-1-HZPCZSDq274nK7deIQ9hxoCufrMIVR.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-2-U18XTZe3bhhdWRquAFtDeTdtCONyCz.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-3-3TZYBvdO7yXt2w0SN6EaE6O67lGSmY.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-4-3qVhWZVf58lLSzmfGz8vQmtVi5kUW8.jpeg'
     ],
     isAvailable: true,
     tags: ['Elegante', 'Día', 'Clásico'],
@@ -56,7 +60,11 @@ export const shoes: Shoe[] = [
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.2.png-XmCdQHzucR2hDZ1xL6BWXzY8kV7Xh0.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203.3.png-gSOOsVeQkNjvTLjjYz0M3g2qVhvQ6Y.jpeg',
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203-ztEBUQfO2FBXZwIGzAxfGYCegEKqAm.jpeg'
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%203-ztEBUQfO2FBXZwIGzAxfGYCegEKqAm.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-002%20-1-3UEbSUb6VWOMO5HEsGwIfNWRSKw65e.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-002%20-2-Jv950JuXR6wnGsWQycAo8MjiINypQP.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-002%20-3-GxJxDK0CVsa3BkEwHJylT0a4DRdWhx.jpeg',
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-002%20-4-bQJsftG19iDvoP7BFOPYgBmwQAdLyA.jpeg'
     ],
     isAvailable: true,
     tags: ['Elegante', 'Noche', 'Moderno'],

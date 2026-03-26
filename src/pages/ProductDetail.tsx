@@ -117,8 +117,8 @@ export default function ProductDetail() {
         {/* ── MOBILE PRODUCT SECTION ───────────────────────────────── */}
         <div className="lg:hidden w-full bg-[#F5F5F0] pb-6">
 
-          {/* Image */}
-          <div className="relative w-full aspect-square bg-neutral-100 overflow-hidden">
+          {/* Main image — full-view with contain so full shoe is always visible */}
+          <div className="relative w-full bg-neutral-100" style={{ aspectRatio: '4/3' }}>
             <AnimatePresence mode="wait">
               <motion.img
                 key={currentImageIndex}
@@ -127,47 +127,51 @@ export default function ProductDetail() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full h-full object-cover"
+                transition={{ duration: 0.25 }}
+                className="w-full h-full object-contain"
                 referrerPolicy="no-referrer"
               />
             </AnimatePresence>
 
             {/* Badges overlay */}
-            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-              <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+            <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+              <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest">
                 <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
                 Alta demanda
               </span>
               {shoe.badge && (
-                <span className="bg-[#D4A373] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
+                <span className="bg-[#D4A373] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-sm">
                   {shoe.badge}
                 </span>
               )}
             </div>
-
-            {shoe.images.length > 1 && (
-              <>
-                <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Imagen anterior">
-                  <ChevronLeft size={16} />
-                </button>
-                <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Siguiente imagen">
-                  <ChevronRight size={16} />
-                </button>
-              </>
-            )}
-
-            {/* Image dots */}
-            {shoe.images.length > 1 && (
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                {shoe.images.map((_, idx) => (
-                  <button key={idx} onClick={() => setCurrentImageIndex(idx)} aria-label={`Imagen ${idx + 1}`}
-                    className={`rounded-full transition-all duration-200 ${idx === currentImageIndex ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50'}`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
+
+          {/* Thumbnail strip — horizontal scroll, touch-friendly */}
+          {shoe.images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto hide-scrollbar px-3 py-3 bg-neutral-50 border-t border-neutral-100" style={{ scrollSnapType: 'x mandatory' }}>
+              {shoe.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentImageIndex(idx)}
+                  aria-label={`Ver imagen ${idx + 1}`}
+                  style={{ scrollSnapAlign: 'start' }}
+                  className={`relative flex-shrink-0 w-20 h-20 bg-white overflow-hidden rounded-md border-2 transition-all duration-200 ${
+                    currentImageIndex === idx
+                      ? 'border-neutral-900 opacity-100'
+                      : 'border-transparent opacity-55 hover:opacity-80'
+                  }`}
+                >
+                  <img
+                    src={img}
+                    alt={`Miniatura ${idx + 1}`}
+                    className="w-full h-full object-contain"
+                    referrerPolicy="no-referrer"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Product info block */}
           <div className="px-4 pt-5">
@@ -269,7 +273,7 @@ export default function ProductDetail() {
                         animate={{ opacity: 1, scale: isZoomed ? 1.5 : 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className={`w-full h-full object-cover transition-transform duration-500 ${isZoomed ? 'cursor-zoom-out' : 'hover:scale-105'}`}
+                        className={`w-full h-full object-contain transition-transform duration-500 ${isZoomed ? 'cursor-zoom-out scale-150' : 'hover:scale-105'}`}
                         referrerPolicy="no-referrer"
                       />
                     </AnimatePresence>
@@ -296,10 +300,15 @@ export default function ProductDetail() {
                   </div>
 
                   {shoe.images.length > 1 && (
-                    <div className="flex gap-4 mt-4 overflow-x-auto hide-scrollbar">
+                    <div className="flex gap-3 mt-4 overflow-x-auto hide-scrollbar pb-1" style={{ scrollSnapType: 'x mandatory' }}>
                       {shoe.images.map((img, idx) => (
-                        <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`relative w-20 h-24 flex-shrink-0 bg-neutral-50 overflow-hidden transition-all duration-200 ${currentImageIndex === idx ? 'ring-1 ring-neutral-900 opacity-100' : 'opacity-60 hover:opacity-100'}`}>
-                          <img src={img} alt={`Miniatura ${idx + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentImageIndex(idx)}
+                          style={{ scrollSnapAlign: 'start' }}
+                          className={`relative w-20 h-20 flex-shrink-0 bg-neutral-50 overflow-hidden rounded-md border-2 transition-all duration-200 ${currentImageIndex === idx ? 'border-neutral-900 opacity-100' : 'border-transparent opacity-50 hover:opacity-80'}`}
+                        >
+                          <img src={img} alt={`Miniatura ${idx + 1}`} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                         </button>
                       ))}
                     </div>
