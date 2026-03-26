@@ -459,11 +459,30 @@ export default function ProductDetail() {
 
             {/* Related Products */}
             {relatedShoes.length > 0 && (
-              <div className="mt-16 md:mt-32 border-t border-neutral-100 pt-16">
-                <div className="text-center mb-12">
-                  <h2 className="text-2xl font-serif font-light text-neutral-900 mb-4 uppercase tracking-widest">Tambien podria gustarte</h2>
+              <div className="mt-16 md:mt-32 border-t border-neutral-100 pt-12">
+                <div className="text-center mb-8">
+                  <h2 className="text-xl md:text-2xl font-serif font-light text-neutral-900 uppercase tracking-widest">Tambien podria gustarte</h2>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+
+                {/* Mobile: horizontal scroll strip */}
+                <div className="lg:hidden flex gap-4 overflow-x-auto hide-scrollbar pb-2 -mx-4 px-4" style={{ scrollSnapType: 'x mandatory' }}>
+                  {relatedShoes.map((relatedShoe, index) => (
+                    <motion.div
+                      key={relatedShoe.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: index * 0.08 }}
+                      className="flex-shrink-0 w-56"
+                      style={{ scrollSnapAlign: 'start' }}
+                    >
+                      <ProductCard shoe={relatedShoe} />
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Desktop: grid */}
+                <div className="hidden lg:grid grid-cols-4 gap-6">
                   {relatedShoes.map((relatedShoe, index) => (
                     <motion.div key={relatedShoe.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: index * 0.1 }}>
                       <ProductCard shoe={relatedShoe} />
