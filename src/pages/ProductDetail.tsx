@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, AlertCircle, ArrowLeft, Check, ShieldCheck, Truck, PackageOpen, Star, Diamond, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, AlertCircle, ArrowLeft, Check, ShieldCheck, Truck, PackageOpen } from 'lucide-react';
 import { shoes } from '@/data/shoes';
 import ProductCard from '@/components/ProductCard';
 import TestimonialsSlider from '@/components/TestimonialsSlider';
@@ -87,27 +87,6 @@ export default function ProductDetail() {
     'El toque de exclusividad que tu outfit necesita.',
   ];
 
-  // 3 benefit cards for the mobile promo strip (inspired by reference image)
-  const benefitCards: Record<string, Array<{ icon: React.ReactNode; title: string; desc: string }>> = {
-    'Estiletos': [
-      { icon: <Star size={22} className="text-[#B5824A]" />, title: 'Estiliza tu figura', desc: 'Taco diseñado para realzar tu pie desde el primer uso' },
-      { icon: <Zap size={22} className="text-[#B5824A]" />, title: 'Ajuste adaptable', desc: 'Material que se amolda suavemente' },
-      { icon: <Diamond size={22} className="text-[#B5824A]" />, title: 'Diseño exclusivo', desc: 'Modelo único que eleva cualquier outfit' },
-    ],
-    'Sandalias bajas': [
-      { icon: <Star size={22} className="text-[#B5824A]" />, title: 'Maxima comodidad', desc: 'Horas de uso sin que los pies protesten' },
-      { icon: <Zap size={22} className="text-[#B5824A]" />, title: 'Versatilidad total', desc: 'Combina con cualquier look sin esfuerzo' },
-      { icon: <Diamond size={22} className="text-[#B5824A]" />, title: 'Hecha para el verano', desc: 'Fresca y resistente para el clima peruano' },
-    ],
-    'Sandalias de vestir': [
-      { icon: <Star size={22} className="text-[#B5824A]" />, title: 'Presencia inmediata', desc: 'El par que genera comentarios al entrar' },
-      { icon: <Zap size={22} className="text-[#B5824A]" />, title: 'Materiales premium', desc: 'Calidad que se nota y se siente al tacto' },
-      { icon: <Diamond size={22} className="text-[#B5824A]" />, title: 'Edicion limitada', desc: 'Unica en su diseño, hecha para destacar' },
-    ],
-  };
-
-  const cards = benefitCards[shoe.type] ?? benefitCards['Estiletos'];
-
   const nextImage = () => setCurrentImageIndex(prev => (prev + 1) % shoe.images.length);
   const prevImage = () => setCurrentImageIndex(prev => (prev - 1 + shoe.images.length) % shoe.images.length);
 
@@ -135,105 +114,124 @@ export default function ProductDetail() {
     <>
       <div className="bg-white min-h-screen pb-28 lg:pb-12">
 
-        {/* ── MOBILE HERO STRIP ─────────────────────────────────────── */}
-        <div className="lg:hidden w-full bg-gradient-to-b from-[#f9ede4] via-[#f5e4d7] to-[#f0d8c8] pt-4 pb-8 px-4 text-center relative overflow-hidden">
-          {/* sparkle decorations */}
-          <span className="absolute top-6 left-8 text-[#D4A373] opacity-60 text-xl select-none">✦</span>
-          <span className="absolute top-10 right-10 text-[#D4A373] opacity-40 text-base select-none">✦</span>
-          <span className="absolute bottom-12 left-6 text-[#D4A373] opacity-30 text-sm select-none">✦</span>
+        {/* ── MOBILE PRODUCT SECTION ───────────────────────────────── */}
+        <div className="lg:hidden w-full bg-[#F5F5F0] pb-6">
 
-          {/* Badge row */}
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-              <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
-              Alta demanda
-            </span>
-            {shoe.badge && (
-              <span className="bg-[#D4A373] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                {shoe.badge}
+          {/* Image */}
+          <div className="relative w-full aspect-square bg-neutral-100 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImageIndex}
+                src={shoe.images[currentImageIndex]}
+                alt={`${shoe.name} - Vista ${currentImageIndex + 1}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </AnimatePresence>
+
+            {/* Badges overlay */}
+            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+              <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+                Alta demanda
               </span>
+              {shoe.badge && (
+                <span className="bg-[#D4A373] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
+                  {shoe.badge}
+                </span>
+              )}
+            </div>
+
+            {shoe.images.length > 1 && (
+              <>
+                <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Imagen anterior">
+                  <ChevronLeft size={16} />
+                </button>
+                <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Siguiente imagen">
+                  <ChevronRight size={16} />
+                </button>
+              </>
+            )}
+
+            {/* Image dots */}
+            {shoe.images.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                {shoe.images.map((_, idx) => (
+                  <button key={idx} onClick={() => setCurrentImageIndex(idx)} aria-label={`Imagen ${idx + 1}`}
+                    className={`rounded-full transition-all duration-200 ${idx === currentImageIndex ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50'}`}
+                  />
+                ))}
+              </div>
             )}
           </div>
 
-          {/* Title */}
-          <h1 className="text-2xl font-serif font-bold text-[#7C3A2A] leading-tight tracking-tight text-balance mb-1 uppercase">
-            {shoe.name}
-          </h1>
-          <p className="text-sm text-[#9B5D40] font-light mb-1">
-            {shoe.type === 'Estiletos' ? 'Estiliza tu figura y luce elegante sin esfuerzo' :
-              shoe.type === 'Sandalias bajas' ? 'Comodidad y estilo para cada momento del dia' :
-              'Presencia y sofisticacion en cada paso'}
-          </p>
-          <p className="text-xs text-[#B5824A] mb-4">Comodidad que realza tu estilo desde el primer paso</p>
+          {/* Product info block */}
+          <div className="px-4 pt-5">
 
-          {/* Image with trust badge overlay */}
-          <div className="relative mx-auto w-full max-w-xs">
-            <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={currentImageIndex}
-                  src={shoe.images[currentImageIndex]}
-                  alt={`${shoe.name} - Vista ${currentImageIndex + 1}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </AnimatePresence>
-              {shoe.images.length > 1 && (
-                <>
-                  <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Imagen anterior">
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm z-10" aria-label="Siguiente imagen">
-                    <ChevronRight size={16} />
-                  </button>
-                </>
-              )}
+            {/* Category + SKU */}
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-neutral-500 uppercase tracking-widest font-medium">{shoe.type}</p>
+              <p className="text-xs text-neutral-400 font-mono">SKU: {shoe.sku}</p>
             </div>
-            {/* Exclusive badge — top-right overlay */}
-            <div className="absolute -top-3 -right-3 bg-[#f9ede4] border border-[#D4A373] rounded-xl px-3 py-2 shadow-md text-center">
-              <p className="text-[10px] font-bold text-[#7C3A2A] uppercase leading-tight">Diseño</p>
-              <p className="text-[10px] font-bold text-[#7C3A2A] uppercase leading-tight">exclusivo</p>
-              <p className="text-[9px] text-[#B5824A] mt-0.5 leading-tight">Edición limitada<br />disponible</p>
+
+            {/* Name */}
+            <h1 className="text-2xl font-serif font-light text-neutral-900 leading-tight tracking-tight uppercase text-balance mb-3">
+              {shoe.name}
+            </h1>
+
+            {/* Price row */}
+            <div className="flex items-baseline gap-3 mb-1">
+              <span className="text-2xl font-medium text-neutral-900">S/ {shoe.price.toFixed(2)}</span>
             </div>
-          </div>
+            <p className="text-xs text-[#D4A373] font-medium mb-5">Solo quedan 2 pares en tu talla.</p>
 
-          {/* Benefit sub-heading */}
-          <p className="mt-6 text-xs font-bold uppercase tracking-widest text-[#7C3A2A] text-center px-2">
-            Disfruta de elegancia, comodidad y estilo en un solo par de zapatos
-          </p>
+            {/* Benefit bullets */}
+            <ul className="space-y-2.5 mb-6">
+              {bullets.map((point, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-sm text-neutral-700">
+                  <Check size={15} className="text-[#D4A373] flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                  {point}
+                </li>
+              ))}
+            </ul>
 
-          {/* 3 benefit cards */}
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            {cards.map((card, i) => (
-              <div key={i} className="bg-white/70 backdrop-blur-sm rounded-xl p-2.5 flex flex-col items-center text-center shadow-sm border border-white/80">
-                <div className="w-9 h-9 rounded-full bg-[#f9ede4] flex items-center justify-center mb-1.5">
-                  {card.icon}
-                </div>
-                <p className="text-[10px] font-bold text-[#7C3A2A] leading-tight mb-0.5 italic">{card.title}</p>
-                <p className="text-[9px] text-[#9B5D40] leading-tight">{card.desc}</p>
+            {/* Testimonials slider — horizontal, mobile-optimized */}
+            <div className="mb-6">
+              <TestimonialsSlider compact />
+            </div>
+
+            {/* Grand Slam Offer */}
+            <div className="bg-white border border-[#D4A373]/30 rounded-xl p-4 mb-6">
+              <p className="text-xs font-bold uppercase tracking-widest text-[#D4A373] mb-2">Oferta de Hoy</p>
+              <p className="text-sm text-neutral-700 leading-relaxed mb-3">
+                Asegura tu par ahora y llevate <strong className="text-neutral-900">envio GRATIS a todo el Peru</strong> por la compra de 2 pares.
+              </p>
+              <div className="flex items-start gap-2">
+                <ShieldCheck size={15} className="text-neutral-500 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                <p className="text-xs text-neutral-600">
+                  <strong className="text-neutral-800">Garantia AMIRAH:</strong> Si la talla no te queda perfecta, el primer cambio es 100% GRATIS. Cero riesgos para ti.
+                </p>
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Testimonials slider — horizontal, touch-friendly */}
-          <div className="mt-6 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-white/80 shadow-sm">
-            <TestimonialsSlider compact />
-          </div>
-
-          {/* Price pill */}
-          <div className="mt-5 mx-auto max-w-xs">
-            <div className="bg-[#7C3A2A] rounded-full py-3 px-6 flex items-center justify-center gap-3 shadow-lg">
-              <div className="text-left">
-                <p className="text-white/70 text-[9px] uppercase tracking-widest leading-none">Camina con seguridad desde el primer paso</p>
-                <p className="text-white font-bold text-2xl leading-none mt-0.5">S/ {shoe.price.toFixed(2)}</p>
+            {/* Trust signals */}
+            <div className="grid grid-cols-3 gap-3 py-4 border-t border-neutral-200 mb-6">
+              <div className="flex flex-col items-center text-center gap-1.5">
+                <Truck size={18} className="text-neutral-400" strokeWidth={1.5} />
+                <span className="text-[10px] text-neutral-500 leading-tight">Envio a todo el pais</span>
               </div>
-              <span className="text-[#f4c98a] font-bold text-sm uppercase tracking-wider border border-[#f4c98a]/40 rounded-lg px-2 py-1">
-                Solo hoy
-              </span>
+              <div className="flex flex-col items-center text-center gap-1.5">
+                <ShieldCheck size={18} className="text-neutral-400" strokeWidth={1.5} />
+                <span className="text-[10px] text-neutral-500 leading-tight">Pago 100% seguro</span>
+              </div>
+              <div className="flex flex-col items-center text-center gap-1.5">
+                <PackageOpen size={18} className="text-neutral-400" strokeWidth={1.5} />
+                <span className="text-[10px] text-neutral-500 leading-tight">Cambio de talla GRATIS</span>
+              </div>
             </div>
           </div>
         </div>
@@ -311,7 +309,7 @@ export default function ProductDetail() {
 
               {/* Product Info */}
               <div className="lg:w-2/5 flex flex-col">
-                {/* Desktop-only header (hidden on mobile where hero strip handles it) */}
+                {/* Desktop-only header */}
                 <div className="hidden lg:block mb-2">
                   <div className="flex justify-between items-start mb-2">
                     <p className="text-xs text-neutral-500 uppercase tracking-widest font-medium">{shoe.type}</p>
@@ -332,17 +330,8 @@ export default function ProductDetail() {
                   <p className="text-sm text-[#D4A373] font-medium mb-6">Solo quedan 2 pares en tu talla.</p>
                 </div>
 
-                {/* Mobile: price + scarcity row */}
-                <div className="lg:hidden flex items-center justify-between mb-4 mt-2">
-                  <div>
-                    <span className="text-2xl font-bold text-neutral-900">S/ {shoe.price.toFixed(2)}</span>
-                    <p className="text-xs text-[#D4A373] font-medium mt-0.5">Solo quedan 2 pares en tu talla.</p>
-                  </div>
-                  <p className="text-xs text-neutral-400 font-mono">SKU: {shoe.sku}</p>
-                </div>
-
-                {/* Benefit bullets */}
-                <ul className="space-y-2.5 mb-6">
+                {/* Benefit bullets — desktop only */}
+                <ul className="hidden lg:block space-y-2.5 mb-6">
                   {bullets.map((point, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-neutral-700">
                       <Check size={15} className="text-[#D4A373] flex-shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -351,8 +340,8 @@ export default function ProductDetail() {
                   ))}
                 </ul>
 
-                {/* Grand Slam Offer box */}
-                <div className="bg-[#FAFAF7] border border-[#D4A373]/30 rounded-xl p-5 mb-8">
+                {/* Grand Slam Offer box — desktop only */}
+                <div className="hidden lg:block bg-[#FAFAF7] border border-[#D4A373]/30 rounded-xl p-5 mb-8">
                   <p className="text-xs font-bold uppercase tracking-widest text-[#D4A373] mb-2">Oferta de Hoy</p>
                   <p className="text-sm text-neutral-700 leading-relaxed mb-3">
                     Asegura tu par ahora y llevate <strong className="text-neutral-900">envio GRATIS a todo el Peru</strong> por la compra de 2 pares.
@@ -440,8 +429,8 @@ export default function ProductDetail() {
                   </button>
                 </div>
 
-                {/* Trust Signals */}
-                <div className="grid grid-cols-1 gap-3 py-6 border-t border-neutral-100 mb-8">
+                {/* Trust Signals — desktop only */}
+                <div className="hidden lg:grid grid-cols-1 gap-3 py-6 border-t border-neutral-100 mb-8">
                   <div className="flex items-center gap-3 text-sm text-neutral-600">
                     <Truck size={18} className="text-neutral-400 flex-shrink-0" strokeWidth={1.5} />
                     <span>Envio a todo el pais.</span>
