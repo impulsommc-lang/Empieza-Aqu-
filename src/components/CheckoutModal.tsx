@@ -108,36 +108,35 @@ export default function CheckoutModal() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 80 }}
             transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-            className="relative bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-            style={{ maxHeight: '93dvh' }}
+            className="relative bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col"
           >
             {/* Drag handle */}
-            <div className="flex justify-center pt-3 pb-0 sm:hidden flex-shrink-0">
+            <div className="flex justify-center pt-2.5 pb-0 sm:hidden">
               <div className="w-9 h-1 bg-neutral-200 rounded-full" />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 pt-4 pb-3 flex-shrink-0">
+            <div className="flex items-center justify-between px-4 pt-3 pb-2">
               <div>
-                <h2 className="text-base font-serif font-semibold text-neutral-900 leading-snug">
+                <h2 className="text-sm font-serif font-semibold text-neutral-900 leading-tight">
                   Confirma tu pedido
                 </h2>
-                <p className="text-xs text-neutral-400 mt-0.5">
+                <p className="text-[11px] text-neutral-400 mt-0.5">
                   No pagas nada ahora. Solo separas tu par.
                 </p>
               </div>
               <button
                 onClick={closeCheckout}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 transition-colors flex-shrink-0 ml-3"
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 transition-colors flex-shrink-0 ml-2"
                 aria-label="Cerrar"
               >
-                <X size={16} />
+                <X size={14} />
               </button>
             </div>
 
-            {/* Order summary card */}
-            <div className="mx-4 mb-3 rounded-2xl border border-neutral-100 bg-neutral-50 flex items-center gap-3 p-3 flex-shrink-0">
-              <div className="w-16 h-16 rounded-xl border border-neutral-200 bg-white overflow-hidden flex-shrink-0">
+            {/* Order summary — slim horizontal card */}
+            <div className="mx-4 mb-3 rounded-xl border border-neutral-100 bg-neutral-50 flex items-center gap-2.5 px-3 py-2">
+              <div className="w-12 h-12 rounded-lg border border-neutral-200 bg-white overflow-hidden flex-shrink-0">
                 <img
                   src={shoe.images[0]}
                   alt={shoe.name}
@@ -146,33 +145,27 @@ export default function CheckoutModal() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-neutral-900 uppercase tracking-wide leading-tight truncate">
+                <p className="text-xs font-semibold text-neutral-900 uppercase tracking-wide leading-tight truncate">
                   {shoe.name}
                 </p>
-                <p className="text-xs text-neutral-500 mt-0.5">
+                <p className="text-[11px] text-neutral-500 mt-0.5">
                   Talla {size}&nbsp;&bull;&nbsp;Cant. {quantity}
+                  {discount > 0 && <span className="text-[#D4A373] ml-2">-S/ {discount.toFixed(2)}</span>}
                 </p>
-                {discount > 0 && (
-                  <p className="text-xs text-[#D4A373] font-medium mt-0.5">
-                    Descuento aplicado: -S/ {discount.toFixed(2)}
-                  </p>
-                )}
               </div>
               <div className="flex-shrink-0 text-right">
-                <p className="text-base font-bold text-neutral-900">S/ {finalTotal.toFixed(2)}</p>
+                <p className="text-sm font-bold text-neutral-900">S/ {finalTotal.toFixed(2)}</p>
                 {discount > 0 && (
-                  <p className="text-xs text-neutral-400 line-through">S/ {itemTotal.toFixed(2)}</p>
+                  <p className="text-[10px] text-neutral-400 line-through">S/ {itemTotal.toFixed(2)}</p>
                 )}
               </div>
             </div>
 
-            {/* Scrollable form */}
-            <form
-              onSubmit={handleSubmit}
-              className="overflow-y-auto flex-1 px-4 pb-4 space-y-3"
-            >
+            {/* Form — no scroll, all visible */}
+            <form onSubmit={handleSubmit} className="px-4 space-y-2">
+
               {/* Section label */}
-              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 pt-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
                 Tus datos de envio
               </p>
 
@@ -186,18 +179,16 @@ export default function CheckoutModal() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Tu nombre completo"
-                  className={`w-full h-12 px-4 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.name ? 'border-red-400' : 'border-neutral-200'}`}
+                  className={`w-full h-10 px-3.5 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.name ? 'border-red-400' : 'border-neutral-200'}`}
                 />
-                {errors.name && (
-                  <p className="text-xs text-red-500 mt-1 ml-1">{errors.name}</p>
-                )}
+                {errors.name && <p className="text-[11px] text-red-500 mt-0.5 ml-1">{errors.name}</p>}
               </div>
 
               {/* Phone */}
               <div>
                 <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
-                    <Phone size={15} />
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
+                    <Phone size={14} />
                   </span>
                   <input
                     type="tel"
@@ -207,19 +198,17 @@ export default function CheckoutModal() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Numero de WhatsApp"
-                    className={`w-full h-12 pl-10 pr-4 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.phone ? 'border-red-400' : 'border-neutral-200'}`}
+                    className={`w-full h-10 pl-9 pr-3.5 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.phone ? 'border-red-400' : 'border-neutral-200'}`}
                   />
                 </div>
-                {errors.phone && (
-                  <p className="text-xs text-red-500 mt-1 ml-1">{errors.phone}</p>
-                )}
+                {errors.phone && <p className="text-[11px] text-red-500 mt-0.5 ml-1">{errors.phone}</p>}
               </div>
 
               {/* Address */}
               <div>
                 <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
-                    <MapPin size={15} />
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
+                    <MapPin size={14} />
                   </span>
                   <input
                     type="text"
@@ -229,81 +218,69 @@ export default function CheckoutModal() {
                     value={formData.address}
                     onChange={handleChange}
                     placeholder="Direccion de envio"
-                    className={`w-full h-12 pl-10 pr-4 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.address ? 'border-red-400' : 'border-neutral-200'}`}
+                    className={`w-full h-10 pl-9 pr-3.5 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.address ? 'border-red-400' : 'border-neutral-200'}`}
                   />
                 </div>
-                {errors.address && (
-                  <p className="text-xs text-red-500 mt-1 ml-1">{errors.address}</p>
-                )}
+                {errors.address && <p className="text-[11px] text-red-500 mt-0.5 ml-1">{errors.address}</p>}
               </div>
 
-              {/* Payment section */}
-              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 pt-2">
-                Metodo de pago
-              </p>
-              {errors.payment && (
-                <p className="text-xs text-red-500 -mt-1 ml-1">{errors.payment}</p>
-              )}
-              <div className="space-y-2">
-                {paymentOptions.map(opt => {
-                  const active = paymentMethod === opt.id;
-                  return (
-                    <button
-                      key={opt.id}
-                      type="button"
-                      onClick={() => {
-                        setPaymentMethod(opt.id);
-                        if (errors.payment) setErrors(prev => ({ ...prev, payment: '' }));
-                      }}
-                      className={`relative w-full flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-150 text-left ${
-                        active
-                          ? 'border-neutral-900 bg-neutral-50'
-                          : 'border-neutral-100 bg-white hover:border-neutral-200'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${active ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                        {opt.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-semibold leading-none ${active ? 'text-neutral-900' : 'text-neutral-700'}`}>
+              {/* Payment — compact 3-column grid */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                    Metodo de pago
+                  </p>
+                  {errors.payment && <p className="text-[11px] text-red-500">{errors.payment}</p>}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {paymentOptions.map(opt => {
+                    const active = paymentMethod === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => {
+                          setPaymentMethod(opt.id);
+                          if (errors.payment) setErrors(prev => ({ ...prev, payment: '' }));
+                        }}
+                        className={`flex flex-col items-center justify-center gap-1 py-2.5 px-1 rounded-xl border-2 transition-all duration-150 ${
+                          active
+                            ? 'border-neutral-900 bg-neutral-50'
+                            : 'border-neutral-100 bg-white hover:border-neutral-200'
+                        }`}
+                      >
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors ${active ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                          {opt.icon}
+                        </div>
+                        <p className={`text-[10px] font-semibold text-center leading-tight ${active ? 'text-neutral-900' : 'text-neutral-600'}`}>
                           {opt.label}
                         </p>
-                        <p className="text-xs text-neutral-400 mt-0.5">{opt.sub}</p>
-                      </div>
-                      {active && (
-                        <CheckCircle2 size={18} className="text-neutral-900 flex-shrink-0" />
-                      )}
-                    </button>
-                  );
-                })}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-
-              {/* Extra bottom space so last item isn't hidden behind footer */}
-              <div className="h-2" />
             </form>
 
-            {/* Sticky footer */}
-            <div className="px-4 pb-5 pt-3 border-t border-neutral-100 flex-shrink-0 bg-white">
-              {/* Total recap */}
-              <div className="flex items-center justify-between mb-3 px-1">
-                <span className="text-xs text-neutral-500 uppercase tracking-widest">Total a pagar</span>
+            {/* Footer — total + CTA */}
+            <div className="px-4 pt-3 pb-5 mt-3 border-t border-neutral-100 bg-white">
+              <div className="flex items-center justify-between mb-2.5 px-0.5">
+                <span className="text-[11px] text-neutral-500 uppercase tracking-widest font-medium">Total a pagar</span>
                 <span className="text-base font-bold text-neutral-900">S/ {finalTotal.toFixed(2)}</span>
               </div>
 
-              {/* WhatsApp CTA */}
               <button
-                type="submit"
+                type="button"
                 onClick={handleSubmit}
-                className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] text-white py-4 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-[#1fb85a] active:bg-[#1aa650] transition-all duration-200 shadow-lg shadow-green-200"
+                className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] text-white py-3.5 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-[#1fb85a] active:bg-[#1aa650] transition-all duration-200 shadow-md shadow-green-200"
               >
-                <MessageCircle size={18} strokeWidth={2.5} />
+                <MessageCircle size={17} strokeWidth={2.5} />
                 Confirmar Pedido por WhatsApp
               </button>
 
-              {/* Trust note */}
-              <div className="flex items-center justify-center gap-1.5 mt-2.5">
-                <ShieldCheck size={12} className="text-neutral-400 flex-shrink-0" />
-                <p className="text-[11px] text-neutral-400 text-center leading-snug">
+              <div className="flex items-center justify-center gap-1.5 mt-2">
+                <ShieldCheck size={11} className="text-neutral-400 flex-shrink-0" />
+                <p className="text-[10px] text-neutral-400 text-center leading-snug">
                   No pagas en esta pantalla. Coordinas con nosotros por WhatsApp.
                 </p>
               </div>
