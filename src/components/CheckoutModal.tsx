@@ -1,25 +1,44 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Phone, Banknote, Truck, MessageCircle, ShieldCheck } from 'lucide-react';
+import { X, Phone, Banknote, Truck, MessageCircle, ShieldCheck, MapPin, CheckCircle2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { getWhatsAppLink } from '@/lib/utils';
 
-// Facebook Pixel type shim
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
   }
 }
 
+type PaymentId = 'contra-entrega' | 'yape' | 'transferencia';
+
+const paymentOptions: { id: PaymentId; label: string; sub: string; icon: React.ReactNode }[] = [
+  {
+    id: 'contra-entrega',
+    label: 'Contra Entrega',
+    sub: 'Pagas al recibir tu pedido',
+    icon: <Truck size={16} />,
+  },
+  {
+    id: 'yape',
+    label: 'Yape / Plin',
+    sub: 'Pago instantaneo y seguro',
+    icon: <span className="text-xs font-extrabold leading-none">Y</span>,
+  },
+  {
+    id: 'transferencia',
+    label: 'Transferencia',
+    sub: 'BCP · Interbank · BBVA',
+    icon: <Banknote size={16} />,
+  },
+];
+
 export default function CheckoutModal() {
   const { isCheckoutOpen, closeCheckout, checkoutShoe, discount } = useCart();
 
-  const [paymentMethod, setPaymentMethod] = useState<'contra-entrega' | 'yape' | 'transferencia' | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-  });
+  const [paymentMethod, setPaymentMethod] = useState<PaymentId | null>(null);
+  const [formData, setFormData] = useState({ name: '', phone: '', address: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   if (!checkoutShoe) return null;
 
@@ -28,15 +47,25 @@ export default function CheckoutModal() {
   const finalTotal = Math.max(0, itemTotal - discount);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.name.trim()) newErrors.name = 'Ingresa tu nombre.';
+    if (!formData.phone.trim()) newErrors.phone = 'Ingresa tu numero de WhatsApp.';
+    if (!formData.address.trim()) newErrors.address = 'Ingresa tu direccion de envio.';
+    if (!paymentMethod) newErrors.payment = 'Selecciona un metodo de pago.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!paymentMethod) {
-      alert('Por favor selecciona un metodo de pago.');
-      return;
-    }
+    if (!validate()) return;
+
     let message = `*NUEVO PEDIDO AMIRAH*\n\n`;
     message += `*Cliente:* ${formData.name}\n`;
     message += `*WhatsApp:* ${formData.phone}\n`;
@@ -45,9 +74,8 @@ export default function CheckoutModal() {
     message += `- ${quantity}x ${shoe.name} (Talla ${size}) — S/ ${itemTotal.toFixed(2)}\n`;
     if (discount > 0) message += `*Descuento:* -S/ ${discount.toFixed(2)}\n`;
     message += `*Total:* S/ ${finalTotal.toFixed(2)}\n\n`;
-    message += `*Metodo de pago:* ${paymentMethod.toUpperCase()}\n`;
+    message += `*Metodo de pago:* ${paymentMethod!.toUpperCase()}\n`;
 
-    // Facebook Pixel — Purchase (fires when user taps the WhatsApp confirm button)
     window.fbq?.('track', 'Purchase', {
       content_name: shoe.name,
       content_ids: [shoe.sku],
@@ -61,12 +89,6 @@ export default function CheckoutModal() {
     closeCheckout();
   };
 
-  const paymentOptions: { id: 'contra-entrega' | 'yape' | 'transferencia'; label: string; sub: string }[] = [
-    { id: 'contra-entrega', label: 'Contra Entrega', sub: 'Pagas al recibir tu pedido' },
-    { id: 'yape', label: 'Yape / Plin', sub: 'Pago instantaneo y seguro' },
-    { id: 'transferencia', label: 'Transferencia', sub: 'BCP, Interbank, BBVA' },
-  ];
-
   return (
     <AnimatePresence>
       {isCheckoutOpen && (
@@ -76,54 +98,86 @@ export default function CheckoutModal() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={closeCheckout}
           />
 
-          {/* Modal */}
+          {/* Modal sheet */}
           <motion.div
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 60 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-            className="relative bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col"
+            exit={{ opacity: 0, y: 80 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+            className="relative bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            style={{ maxHeight: '93dvh' }}
           >
-            {/* Drag handle (mobile) */}
-            <div className="flex justify-center pt-3 pb-1 sm:hidden flex-shrink-0">
-              <div className="w-10 h-1 bg-neutral-200 rounded-full" />
+            {/* Drag handle */}
+            <div className="flex justify-center pt-3 pb-0 sm:hidden flex-shrink-0">
+              <div className="w-9 h-1 bg-neutral-200 rounded-full" />
             </div>
 
             {/* Header */}
-            <div className="flex items-start justify-between px-6 py-4 border-b border-neutral-100 flex-shrink-0">
+            <div className="flex items-center justify-between px-5 pt-4 pb-3 flex-shrink-0">
               <div>
-                <h2 className="text-lg font-serif font-medium text-neutral-900">Dinos donde enviar tus AMIRAH</h2>
-                <p className="text-xs text-neutral-400 mt-0.5">Solo separas tu stock. No pagas nada ahora.</p>
+                <h2 className="text-base font-serif font-semibold text-neutral-900 leading-snug">
+                  Confirma tu pedido
+                </h2>
+                <p className="text-xs text-neutral-400 mt-0.5">
+                  No pagas nada ahora. Solo separas tu par.
+                </p>
               </div>
-              <button onClick={closeCheckout} className="text-neutral-400 hover:text-neutral-900 transition-colors p-1 -mr-1 flex-shrink-0 ml-4" aria-label="Cerrar">
-                <X size={20} />
+              <button
+                onClick={closeCheckout}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 transition-colors flex-shrink-0 ml-3"
+                aria-label="Cerrar"
+              >
+                <X size={16} />
               </button>
             </div>
 
-            {/* Order preview */}
-            <div className="px-6 py-3 bg-neutral-50 border-b border-neutral-100 flex items-center gap-3 flex-shrink-0">
-              <img
-                src={shoe.images[0]}
-                alt={shoe.name}
-                className="w-12 h-14 object-cover rounded-lg border border-neutral-200 flex-shrink-0"
-                referrerPolicy="no-referrer"
-              />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-neutral-900 truncate uppercase tracking-wide">{shoe.name}</p>
-                <p className="text-xs text-neutral-500">Talla {size} &bull; Cant. {quantity}</p>
+            {/* Order summary card */}
+            <div className="mx-4 mb-3 rounded-2xl border border-neutral-100 bg-neutral-50 flex items-center gap-3 p-3 flex-shrink-0">
+              <div className="w-16 h-16 rounded-xl border border-neutral-200 bg-white overflow-hidden flex-shrink-0">
+                <img
+                  src={shoe.images[0]}
+                  alt={shoe.name}
+                  className="w-full h-full object-contain"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-              <p className="text-sm font-semibold text-neutral-900 flex-shrink-0">S/ {finalTotal.toFixed(2)}</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-neutral-900 uppercase tracking-wide leading-tight truncate">
+                  {shoe.name}
+                </p>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  Talla {size}&nbsp;&bull;&nbsp;Cant. {quantity}
+                </p>
+                {discount > 0 && (
+                  <p className="text-xs text-[#D4A373] font-medium mt-0.5">
+                    Descuento aplicado: -S/ {discount.toFixed(2)}
+                  </p>
+                )}
+              </div>
+              <div className="flex-shrink-0 text-right">
+                <p className="text-base font-bold text-neutral-900">S/ {finalTotal.toFixed(2)}</p>
+                {discount > 0 && (
+                  <p className="text-xs text-neutral-400 line-through">S/ {itemTotal.toFixed(2)}</p>
+                )}
+              </div>
             </div>
 
-            {/* Scrollable form body */}
-            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+            {/* Scrollable form */}
+            <form
+              onSubmit={handleSubmit}
+              className="overflow-y-auto flex-1 px-4 pb-4 space-y-3"
+            >
+              {/* Section label */}
+              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 pt-1">
+                Tus datos de envio
+              </p>
 
               {/* Name */}
-              <div className="relative">
+              <div>
                 <input
                   type="text"
                   id="name"
@@ -131,101 +185,127 @@ export default function CheckoutModal() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder=" "
-                  className="block px-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
+                  placeholder="Tu nombre completo"
+                  className={`w-full h-12 px-4 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.name ? 'border-red-400' : 'border-neutral-200'}`}
                 />
-                <label htmlFor="name" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
-                  Tu nombre completo
-                </label>
+                {errors.name && (
+                  <p className="text-xs text-red-500 mt-1 ml-1">{errors.name}</p>
+                )}
               </div>
 
-              {/* WhatsApp */}
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none z-10">
-                  <Phone size={15} />
-                </span>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  required
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder=" "
-                  className="block pl-10 pr-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
-                />
-                <label htmlFor="phone" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
-                  Tu WhatsApp
-                </label>
+              {/* Phone */}
+              <div>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
+                    <Phone size={15} />
+                  </span>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="Numero de WhatsApp"
+                    className={`w-full h-12 pl-10 pr-4 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.phone ? 'border-red-400' : 'border-neutral-200'}`}
+                  />
+                </div>
+                {errors.phone && (
+                  <p className="text-xs text-red-500 mt-1 ml-1">{errors.phone}</p>
+                )}
               </div>
 
               {/* Address */}
-              <div className="relative">
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  required
-                  value={formData.address}
-                  onChange={handleChange}
-                  placeholder=" "
-                  className="block px-4 pb-2.5 pt-6 w-full text-sm text-neutral-900 bg-transparent rounded-xl border border-neutral-300 appearance-none focus:outline-none focus:ring-0 focus:border-neutral-900 peer"
-                />
-                <label htmlFor="address" className="absolute text-sm text-neutral-500 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
-                  Direccion de envio
-                </label>
+              <div>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
+                    <MapPin size={15} />
+                  </span>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    required
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="Direccion de envio"
+                    className={`w-full h-12 pl-10 pr-4 text-sm text-neutral-900 bg-white rounded-xl border transition-colors outline-none focus:border-neutral-900 placeholder:text-neutral-400 ${errors.address ? 'border-red-400' : 'border-neutral-200'}`}
+                  />
+                </div>
+                {errors.address && (
+                  <p className="text-xs text-red-500 mt-1 ml-1">{errors.address}</p>
+                )}
               </div>
 
-              {/* Payment options */}
-              <div className="space-y-2 pt-1">
-                <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-3">Metodo de pago</p>
-                {paymentOptions.map(opt => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setPaymentMethod(opt.id)}
-                    className={`relative w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-150 text-left ${
-                      paymentMethod === opt.id
-                        ? 'border-neutral-900 bg-neutral-50 shadow-sm'
-                        : 'border-neutral-100 hover:border-neutral-300'
-                    }`}
-                  >
-                    <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 ${paymentMethod === opt.id ? 'bg-neutral-900' : 'bg-neutral-100'}`}>
-                      {opt.id === 'yape' ? (
-                        <span className={`text-xs font-bold ${paymentMethod === opt.id ? 'text-white' : 'text-neutral-500'}`}>Y</span>
-                      ) : opt.id === 'transferencia' ? (
-                        <Banknote size={16} className={paymentMethod === opt.id ? 'text-white' : 'text-neutral-500'} />
-                      ) : (
-                        <Truck size={16} className={paymentMethod === opt.id ? 'text-white' : 'text-neutral-500'} />
+              {/* Payment section */}
+              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 pt-2">
+                Metodo de pago
+              </p>
+              {errors.payment && (
+                <p className="text-xs text-red-500 -mt-1 ml-1">{errors.payment}</p>
+              )}
+              <div className="space-y-2">
+                {paymentOptions.map(opt => {
+                  const active = paymentMethod === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => {
+                        setPaymentMethod(opt.id);
+                        if (errors.payment) setErrors(prev => ({ ...prev, payment: '' }));
+                      }}
+                      className={`relative w-full flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-150 text-left ${
+                        active
+                          ? 'border-neutral-900 bg-neutral-50'
+                          : 'border-neutral-100 bg-white hover:border-neutral-200'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${active ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                        {opt.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-sm font-semibold leading-none ${active ? 'text-neutral-900' : 'text-neutral-700'}`}>
+                          {opt.label}
+                        </p>
+                        <p className="text-xs text-neutral-400 mt-0.5">{opt.sub}</p>
+                      </div>
+                      {active && (
+                        <CheckCircle2 size={18} className="text-neutral-900 flex-shrink-0" />
                       )}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-neutral-900">{opt.label}</p>
-                      <p className="text-xs text-neutral-500">{opt.sub}</p>
-                    </div>
-                    {paymentMethod === opt.id && (
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 bg-neutral-900 rounded-full flex items-center justify-center">
-                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </span>
-                    )}
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
+
+              {/* Extra bottom space so last item isn't hidden behind footer */}
+              <div className="h-2" />
             </form>
 
-            {/* Fixed footer */}
-            <div className="px-6 pb-6 pt-4 border-t border-neutral-100 flex-shrink-0 bg-white">
+            {/* Sticky footer */}
+            <div className="px-4 pb-5 pt-3 border-t border-neutral-100 flex-shrink-0 bg-white">
+              {/* Total recap */}
+              <div className="flex items-center justify-between mb-3 px-1">
+                <span className="text-xs text-neutral-500 uppercase tracking-widest">Total a pagar</span>
+                <span className="text-base font-bold text-neutral-900">S/ {finalTotal.toFixed(2)}</span>
+              </div>
+
+              {/* WhatsApp CTA */}
               <button
                 type="submit"
                 onClick={handleSubmit}
-                className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-[#20bd5a] transition-all duration-200 shadow-md"
+                className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] text-white py-4 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-[#1fb85a] active:bg-[#1aa650] transition-all duration-200 shadow-lg shadow-green-200"
               >
-                <MessageCircle size={18} />
+                <MessageCircle size={18} strokeWidth={2.5} />
                 Confirmar Pedido por WhatsApp
               </button>
-              <div className="flex items-center justify-center gap-1.5 mt-3">
-                <ShieldCheck size={13} className="text-neutral-400" />
-                <p className="text-xs text-neutral-400 text-center">No pagas nada en esta pantalla. Solo separas tu stock.</p>
+
+              {/* Trust note */}
+              <div className="flex items-center justify-center gap-1.5 mt-2.5">
+                <ShieldCheck size={12} className="text-neutral-400 flex-shrink-0" />
+                <p className="text-[11px] text-neutral-400 text-center leading-snug">
+                  No pagas en esta pantalla. Coordinas con nosotros por WhatsApp.
+                </p>
               </div>
             </div>
           </motion.div>
