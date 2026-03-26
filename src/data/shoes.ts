@@ -34,7 +34,6 @@ export const shoes: Shoe[] = [
     images: [
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%20porttada1.png-jBFGzBp3VYqIKYqNLCbwa9i2vP79Uw.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto%202.png-Dc1DARZsqVW9boIqgupC0pg5sUoPTA.jpeg',
-      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/estileto2%20portada.png-rqIUGtMz7I5hnEzeqC1fgHsyfldOWP.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-1-HZPCZSDq274nK7deIQ9hxoCufrMIVR.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-2-U18XTZe3bhhdWRquAFtDeTdtCONyCz.jpeg',
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sku%20st-001%20-3-3TZYBvdO7yXt2w0SN6EaE6O67lGSmY.jpeg',
